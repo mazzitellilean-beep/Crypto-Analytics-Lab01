@@ -4,6 +4,8 @@ def carga_matriz():
 
     tabla_activos = generacion_tabla()
 
+    met_op_invalida = True
+
     nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
 
     if nombre in tabla_activos:
@@ -11,9 +13,29 @@ def carga_matriz():
 
     while nombre.lower() != 'fin':
         ticker = input('Ingrese el ticker del activo: ').upper()
-        valor_ref = int(input('Ingres el valor de referencia base (Ej: USD) del activo: '))
+        valor_ref = int(input('Ingrese el valor de referencia base (Ej: USD) del activo: '))
         vol_act = int(input('Ingrese el volumen de actividad de las ultimas 24hs: '))
-        met_op = input('Ingrese la metodologia de operacion asignada (Ej: Scalping): ')
+        while met_op_invalida:
+            print('Ingrese el número de la metodología de operación asignada para el activo:')
+            print("1. Scalping")
+            print("2. Day Trading")
+            print("3. Swing Trading")
+            print("4. HODL")
+            met_op = int(input())
+            if met_op == 1:
+                met_op = "Scalping"
+                met_op_invalida = False
+            elif met_op == 2:
+                met_op = "Day Trading"
+                met_op_invalida = False
+            elif met_op == 3:
+                met_op = "Swing Trading"
+                met_op_invalida = False
+            elif met_op == 4:
+                met_op = "HODL"
+                met_op_invalida = False
+            else:
+                print("Debe seleccionar una opción disponible (ingresar)")
         unidades = int(input('Ingrese las unidades totales en tesoreria: '))
         punt_conf = int(input('Ingrese el puntaje de confianza del 1 al 10: '))
 
