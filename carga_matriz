@@ -1,1 +1,33 @@
-print("Hola Mundo")
+def carga_matriz():
+
+    from matriz_inicial import generacion_tabla
+
+    tabla_activos = generacion_tabla()
+
+    nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
+
+    while nombre.lower() != 'fin':
+        ticker = input('Ingrese el ticker del activo: ').upper()
+        valor_ref = int(input('Ingres el valor de referencia base (Ej: USD) del activo: '))
+        vol_act = int(input('Ingrese el volumen de actividad de las ultimas 24hs: '))
+        met_op = input('Ingrese la metodologia de operacion asignada (Ej: Scalping): ')
+        unidades = int(input('Ingrese las unidades totales en tesoreria: '))
+        punt_conf = int(input('Ingrese el puntaje de confianza del 1 al 10: '))
+
+        #La variable activo podria eliminarse y directamente agregar los datos a la tabla, pero queda ordenado 
+        activo = [
+            nombre,
+            ticker,
+            valor_ref,
+            vol_act,
+            met_op,
+            unidades,
+            punt_conf
+       ]
+    
+        tabla_activos.append(activo)
+        print('Activo cargado correctamente')
+        nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
+    
+    return tabla_activos
+carga_matriz
