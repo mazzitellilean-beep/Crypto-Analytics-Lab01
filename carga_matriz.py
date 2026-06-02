@@ -25,5 +25,7 @@ def carga_matriz():
         tabla_activos.append(activo)
         print('Activo cargado correctamente')
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
+    
+    return tabla_activos
 
 
