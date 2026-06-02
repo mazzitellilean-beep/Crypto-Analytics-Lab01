@@ -1,6 +1,8 @@
 def carga_matriz():
 
-    tabla_activos = []
+    from generacion_tabla import tabla_activos
+
+    tabla_activos = generacion_tabla()
 
     nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
 
@@ -12,6 +14,7 @@ def carga_matriz():
         unidades = int(input('Ingrese las unidades totales en tesoreria: '))
         punt_conf = int(input('Ingrese el puntaje de confianza del 1 al 10: '))
 
+        #La variable activo podria eliminarse y directamente agregar los datos a la tabla, pero queda ordenado 
         activo = [
             nombre,
             ticker,
