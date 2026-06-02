@@ -1,6 +1,6 @@
 def generacion_tabla():
 
-    items = [nombre, ticker, valor_ref, vol_act, met_op, unidades, punt_conf]
+    #items = [nombre, ticker, valor_ref, vol_act, met_op, unidades, punt_conf]
 
     tabla_activos = [
     ["Apple Inc.", "AAPL", 213.50, 72000000000, "Swing Trading", 850000, 9],
