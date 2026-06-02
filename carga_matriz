@@ -6,6 +6,9 @@ def carga_matriz():
 
     nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
 
+    if nombre in tabla_activos:
+        raise ValueError(f"El activo {nombre} ya existe.")
+
     while nombre.lower() != 'fin':
         ticker = input('Ingrese el ticker del activo: ').upper()
         valor_ref = int(input('Ingres el valor de referencia base (Ej: USD) del activo: '))

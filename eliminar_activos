@@ -1,0 +1,5 @@
+def eliminar(lista, nombre):
+
+    if nombre in lista:
+        lista.remove(nombre)
+    return lista
