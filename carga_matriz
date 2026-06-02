@@ -55,4 +55,3 @@ def carga_matriz():
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
     
     return tabla_activos
-carga_matriz
