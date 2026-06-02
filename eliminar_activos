@@ -1,5 +1,6 @@
 def eliminar(lista, nombre):
 
-    if nombre in lista:
-        lista.remove(nombre)
+    for i in lista:
+        if lista[i][0].lower() == nombre.lower():
+            lista.remove[i]
     return lista
