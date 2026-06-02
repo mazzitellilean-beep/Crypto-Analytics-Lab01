@@ -1,6 +1,6 @@
 def carga_matriz():
 
-    from generacion_tabla import tabla_activos
+    from generacion_tabla import generacion_tabla
 
     tabla_activos = generacion_tabla()
 
