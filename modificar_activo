@@ -34,7 +34,7 @@ def modificar(lista, nombre):
                     print("Ticker modificado exitosamente.")
 
                 elif opcion == 3:
-                    nuevo_valor = int(input("Ingrese el nuevo valor de referencia del activo (en USD): "))
+                    nuevo_valor = float(input("Ingrese el nuevo valor de referencia del activo (en USD): "))
                     lista[i][2] = nuevo_valor
                     print("Valor de referencia modificado exitosamente.")
 

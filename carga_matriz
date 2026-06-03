@@ -13,7 +13,7 @@ def carga_matriz():
 
     while nombre.lower() != 'fin':
         ticker = input('Ingrese el ticker del activo: ').upper()
-        valor_ref = int(input('Ingrese el valor de referencia base (En USD) del activo: '))
+        valor_ref = float(input('Ingrese el valor de referencia base (En USD) del activo: '))
         vol_act = int(input('Ingrese el volumen de actividad de las ultimas 24hs: '))
         while met_op_invalida:
             print('Ingrese el número de la metodología de operación asignada para el activo:')
