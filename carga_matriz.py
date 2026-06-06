@@ -18,6 +18,10 @@ def carga_matriz():
         unidades = float(input('Ingrese las unidades totales en tesoreria: '))
         punt_conf = int(input('Ingrese el puntaje de confianza del 1 al 10: '))
 
+        if met_op < 1 or met_op > 4:
+            datos_validos = False
+            print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
+
         #La variable activo podria eliminarse y directamente agregar los datos a la tabla, pero queda ordenado 
         activo = [
             nombre,
@@ -41,9 +45,6 @@ def carga_matriz():
         if vol_act < 0:
             datos_validos = False
             print('El volumen de actividad no puede ser negativo. Intente nuevamente.')
-        if met_op < 1 or met_op > 4:
-            datos_validos = False
-            print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
         if unidades < 0:
             datos_validos = False
             print('Las unidades totales en tesorería no pueden ser negativas. Intente nuevamente.')
@@ -60,3 +61,5 @@ def carga_matriz():
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
     
     return tabla_activos
+
+
