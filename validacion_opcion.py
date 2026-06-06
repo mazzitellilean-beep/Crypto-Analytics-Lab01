@@ -5,8 +5,9 @@ def verificacion_menu (opcion, lista):
         lista = carga_matriz()
     elif opcion == 2:
         from baja_activo import eliminar
-        lista = eliminar(lista)
-    elif opcion == 3:
+        ticker = int(input('Ingrese el ticker del activo que desea eliminar: '))
+        lista = eliminar(lista, ticker)
+    elif opcion == 3: 
         from modificar_activo import modificar
         lista = modificar(lista)
     elif opcion == 4:
