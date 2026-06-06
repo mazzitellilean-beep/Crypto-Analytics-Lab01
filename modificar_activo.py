@@ -19,7 +19,231 @@ def modificar(lista):
             print("7. Cambiar puntaje de confianza (1-10)")
             print("8. Salir")
 
-            opcion = int(input())
+            opcion = int(input('Ingrese el número de la opción que desea ejecutar: '))
+
+            while opcion != 8:
+
+                if opcion == 1:
+                    nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
+                    i[0] = nuevo_nombre
+                    print("Nombre modificado exitosamente.")
+
+                elif opcion == 2:
+                    nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
+                    i[1] = nuevo_ticker
+                    print("Ticker modificado exitosamente.")
+
+                elif opcion == 3:
+                    nuevo_valor = float(input("Ingrese el nuevo valor de referencia del activo (en USD): "))
+                    i[2] = nuevo_valor
+                    print("Valor de referencia modificado exitosamente.")
+
+                elif opcion == 4:
+                    nuevo_volumen = int(input("Ingrese el nuevo volumen de actividad del activo: "))
+                    i[3] = nuevo_volumen
+                    print("Volumen de actividad modificado exitosamente.")
+
+                elif opcion == 5:
+
+                    while met_op_valida:
+
+                        print('Ingrese el número de la nueva metodología de operación asignada para el activo:')
+                        print("1. Scalping")
+                        print("2. Day Trading")
+                        print("3. Swing Trading")
+                        print("4. HODL")
+
+                        met_op = int(input())
+
+                        if met_op == 1:
+                            met_op = "Scalping"
+                            met_op_valida = False
+
+                        elif met_op == 2:
+                            met_op = "Day Trading"
+                            met_op_valida = False
+
+                        elif met_op == 3:
+                            met_op = "Swing Trading"
+                            met_op_valida = False
+
+                        elif met_op == 4:
+                            met_op = "HODL"
+                            met_op_valida = False
+
+                        else:
+                            print("Debe seleccionar una opción disponible (ingresar)")
+
+                    i[4] = met_op
+                    print("Metodología de operación modificada exitosamente.")
+
+                elif opcion == 6:
+                    nuevas_unidades = int(input("Ingrese las nuevas unidades en tesorería del activo: "))
+                    i[5] = nuevas_unidades
+                    print("Unidades en tesorería modificadas exitosamente.")
+
+                elif opcion == 7:
+                    nuevo_puntaje = int(input("Ingrese el nuevo puntaje de confianza (1-10) del activo: "))
+                    if 1 <= nuevo_puntaje <= 10:
+                        i[6] = nuevo_puntaje
+                        print("Puntaje de confianza modificado exitosamente.")
+
+                    else:
+                        print("Puntaje de confianza inválido. Debe ser un número entre 1 y 10.")
+
+                elif opcion == 8:
+                    print("Saliendo.")
+
+                else:
+                    print("Opción inválida. No se realizaron modificaciones.")
+
+                print(f"Ingrese el número de la opción que desea ejecutar sobre el activo {activo_a_cambiar}:")
+                print()
+                print("1. Cambiar nombre")
+                print("2. Cambiar ticker")
+                print("3. Cambiar valor de referencia")
+                print("4. Cambiar volumen de actividad")
+                print("5. Cambiar metodología de operación")
+                print("6. Cambiar unidades en tesorería")
+                print("7. Cambiar puntaje de confianza (1-10)")
+                print("8. Salir")
+
+                opcion = int(input())
+
+    return listadef modificar(lista):
+
+    met_op_valida = True
+
+    activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar: ")
+
+    for i in lista:
+
+        if i[0] == activo_a_cambiar:
+
+            print(f"Activo {activo_a_cambiar} encontrado. Ingrese el número de la opción que desea ejecutar:")
+            print()
+            print("1. Cambiar nombre")
+            print("2. Cambiar ticker")
+            print("3. Cambiar valor de referencia")
+            print("4. Cambiar volumen de actividad")
+            print("5. Cambiar metodología de operación")
+            print("6. Cambiar unidades en tesorería")
+            print("7. Cambiar puntaje de confianza (1-10)")
+            print("8. Salir")
+
+            opcion = int(input('Ingrese el número de la opción que desea ejecutar: '))
+
+            while opcion != 8:
+
+                if opcion == 1:
+                    nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
+                    i[0] = nuevo_nombre
+                    print("Nombre modificado exitosamente.")
+
+                elif opcion == 2:
+                    nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
+                    i[1] = nuevo_ticker
+                    print("Ticker modificado exitosamente.")
+
+                elif opcion == 3:
+                    nuevo_valor = float(input("Ingrese el nuevo valor de referencia del activo (en USD): "))
+                    i[2] = nuevo_valor
+                    print("Valor de referencia modificado exitosamente.")
+
+                elif opcion == 4:
+                    nuevo_volumen = int(input("Ingrese el nuevo volumen de actividad del activo: "))
+                    i[3] = nuevo_volumen
+                    print("Volumen de actividad modificado exitosamente.")
+
+                elif opcion == 5:
+
+                    while met_op_valida:
+
+                        print('Ingrese el número de la nueva metodología de operación asignada para el activo:')
+                        print("1. Scalping")
+                        print("2. Day Trading")
+                        print("3. Swing Trading")
+                        print("4. HODL")
+
+                        met_op = int(input())
+
+                        if met_op == 1:
+                            met_op = "Scalping"
+                            met_op_valida = False
+
+                        elif met_op == 2:
+                            met_op = "Day Trading"
+                            met_op_valida = False
+
+                        elif met_op == 3:
+                            met_op = "Swing Trading"
+                            met_op_valida = False
+
+                        elif met_op == 4:
+                            met_op = "HODL"
+                            met_op_valida = False
+
+                        else:
+                            print("Debe seleccionar una opción disponible (ingresar)")
+
+                    i[4] = met_op
+                    print("Metodología de operación modificada exitosamente.")
+
+                elif opcion == 6:
+                    nuevas_unidades = int(input("Ingrese las nuevas unidades en tesorería del activo: "))
+                    i[5] = nuevas_unidades
+                    print("Unidades en tesorería modificadas exitosamente.")
+
+                elif opcion == 7:
+                    nuevo_puntaje = int(input("Ingrese el nuevo puntaje de confianza (1-10) del activo: "))
+                    if 1 <= nuevo_puntaje <= 10:
+                        i[6] = nuevo_puntaje
+                        print("Puntaje de confianza modificado exitosamente.")
+
+                    else:
+                        print("Puntaje de confianza inválido. Debe ser un número entre 1 y 10.")
+
+                elif opcion == 8:
+                    print("Saliendo.")
+
+                else:
+                    print("Opción inválida. No se realizaron modificaciones.")
+
+                print(f"Ingrese el número de la opción que desea ejecutar sobre el activo {activo_a_cambiar}:")
+                print()
+                print("1. Cambiar nombre")
+                print("2. Cambiar ticker")
+                print("3. Cambiar valor de referencia")
+                print("4. Cambiar volumen de actividad")
+                print("5. Cambiar metodología de operación")
+                print("6. Cambiar unidades en tesorería")
+                print("7. Cambiar puntaje de confianza (1-10)")
+                print("8. Salir")
+
+                opcion = int(input())
+
+    return listadef modificar(lista):
+
+    met_op_valida = True
+
+    activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar: ")
+
+    for i in lista:
+
+        if i[0] == activo_a_cambiar:
+
+            print(f"Activo {activo_a_cambiar} encontrado. Ingrese el número de la opción que desea ejecutar:")
+            print()
+            print("1. Cambiar nombre")
+            print("2. Cambiar ticker")
+            print("3. Cambiar valor de referencia")
+            print("4. Cambiar volumen de actividad")
+            print("5. Cambiar metodología de operación")
+            print("6. Cambiar unidades en tesorería")
+            print("7. Cambiar puntaje de confianza (1-10)")
+            print("8. Salir")
+
+            opcion = int(input('Ingrese el número de la opción que desea ejecutar: '))
 
             while opcion != 8:
 
