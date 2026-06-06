@@ -31,9 +31,6 @@ def carga_matriz():
         if len(ticker) != 3:
             datos_validos = False
             print('El ticker debe tener exactamente 3 caracteres. Intente nuevamente.')
-        if int(ticker):
-            datos_validos = False
-            print('El ticker no puede ser un número. Intente nuevamente.')
         if valor_ref <= 0:
             datos_validos = False
             print('El valor de referencia debe ser un número positivo. Intente nuevamente.')
@@ -59,4 +56,3 @@ def carga_matriz():
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
     
     return tabla_activos
-
