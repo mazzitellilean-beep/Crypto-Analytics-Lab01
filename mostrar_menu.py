@@ -8,3 +8,5 @@ def menu():
     print("4. Informe General - Visualizacion de los datos")
     print("8. Salir")
     print('='*50)
+
+    opcion = int(input('Ingrese el numero de la opcion que desea ejecutar: '))
