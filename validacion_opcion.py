@@ -1,4 +1,4 @@
-def verificacion_menu (opcion):
+def verificacion_menu (opcion, lista):
     if opcion == 1:
         from carga_matriz import carga_matriz
         carga_matriz()
@@ -10,6 +10,6 @@ def verificacion_menu (opcion):
         modificar()
     elif opcion == 4:
         from mostrar_matriz import mostrar_matriz
-        mostrar_matriz()
+        mostrar_matriz(tabla_activos)
     else:
         print("Opcion no valida. Por favor, ingrese una opcion del menu.")
