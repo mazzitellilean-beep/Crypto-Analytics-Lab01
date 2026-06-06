@@ -1,4 +1,4 @@
-def modificar(lista, nombre):
+def modificar(lista):
 
     met_op_valida = True
 
