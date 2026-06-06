@@ -5,9 +5,9 @@ tabla_activos = generacion_tabla()
 
 opcion = menu()
 
-while opcion != 8:
+while opcion != 8: 
     from validacion_opcion import verificacion_menu
     verificacion_menu(opcion, tabla_activos)
-    opcion = int(input('Ingrese el numero de la opcion que desea ejecutar: '))
+    menu()
 
 print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
