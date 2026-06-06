@@ -1,9 +1,5 @@
 def carga_matriz():
 
-    from generacion_tabla import generacion_tabla
-
-    tabla_activos = generacion_tabla()
-
     nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
 
     while nombre.lower() != 'fin':
@@ -66,5 +62,4 @@ def carga_matriz():
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
     
     return tabla_activos
-
 
