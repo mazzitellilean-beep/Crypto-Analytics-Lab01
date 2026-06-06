@@ -1,7 +1,10 @@
-from carga_matriz import carga_matriz
-from modificar_activo import modificar
-from baja_activo import eliminar
-from mostrar_matriz import mostrar_matriz
 from mostrar_menu import menu
 
-menu()
+opcion = menu()
+
+while opcion != 8:
+    from validacion_opcion import verificacion_menu
+    verificacion_menu(opcion)
+    opcion = int(input('Ingrese el numero de la opcion que desea ejecutar: '))
+
+print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
