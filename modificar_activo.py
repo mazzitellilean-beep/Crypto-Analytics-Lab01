@@ -6,7 +6,7 @@ def modificar(lista):
 
     for i in lista:
 
-        if lista[i][0] == activo_a_cambiar:
+        if i[0] == activo_a_cambiar:
 
             print(f"Activo {activo_a_cambiar} encontrado. Ingrese el número de la opción que desea ejecutar:")
             print()
@@ -25,22 +25,22 @@ def modificar(lista):
 
                 if opcion == 1:
                     nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
-                    lista[i][0] = nuevo_nombre
+                    i[0] = nuevo_nombre
                     print("Nombre modificado exitosamente.")
 
                 elif opcion == 2:
                     nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
-                    lista[i][1] = nuevo_ticker
+                    i[1] = nuevo_ticker
                     print("Ticker modificado exitosamente.")
 
                 elif opcion == 3:
                     nuevo_valor = float(input("Ingrese el nuevo valor de referencia del activo (en USD): "))
-                    lista[i][2] = nuevo_valor
+                    i[2] = nuevo_valor
                     print("Valor de referencia modificado exitosamente.")
 
                 elif opcion == 4:
                     nuevo_volumen = int(input("Ingrese el nuevo volumen de actividad del activo: "))
-                    lista[i][3] = nuevo_volumen
+                    i[3] = nuevo_volumen
                     print("Volumen de actividad modificado exitosamente.")
 
                 elif opcion == 5:
@@ -74,18 +74,18 @@ def modificar(lista):
                         else:
                             print("Debe seleccionar una opción disponible (ingresar)")
 
-                    lista[i][4] = met_op
+                    i[4] = met_op
                     print("Metodología de operación modificada exitosamente.")
 
                 elif opcion == 6:
                     nuevas_unidades = int(input("Ingrese las nuevas unidades en tesorería del activo: "))
-                    lista[i][5] = nuevas_unidades
+                    i[5] = nuevas_unidades
                     print("Unidades en tesorería modificadas exitosamente.")
 
                 elif opcion == 7:
                     nuevo_puntaje = int(input("Ingrese el nuevo puntaje de confianza (1-10) del activo: "))
                     if 1 <= nuevo_puntaje <= 10:
-                        lista[i][6] = nuevo_puntaje
+                        i[6] = nuevo_puntaje
                         print("Puntaje de confianza modificado exitosamente.")
 
                     else:
