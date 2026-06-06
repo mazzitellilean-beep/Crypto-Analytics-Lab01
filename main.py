@@ -8,6 +8,6 @@ opcion = menu()
 while opcion != 8: 
     from validacion_opcion import verificacion_menu
     verificacion_menu(opcion, tabla_activos)
-    menu()
+    opcion = menu()
 
 print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
