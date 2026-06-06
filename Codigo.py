@@ -174,3 +174,57 @@ def modificar_activo():
  
     else:
         print("Opcion no reconocida.")
+    #============================================
+def ordenar_indices():
+    indices= list(range(len(nombres)))
+    for j in range(len(indices)-1-1):
+       puntaje_actual=puntajes[indices[j]]
+    puntaje_siguiente = puntajes[indices[j + 1]]
+    nombre_actual    = nombres[indices[j]]
+    nombre_siguiente = nombres[indices[j + 1]]
+    if puntaje_actual<puntaje_siguiente:
+     indices[j], indices[j+1]=indices[j+1], indices[j]
+    elif puntaje_actual == puntaje_siguiente:
+                if nombre_actual > nombre_siguiente:
+                    indices[j], indices[j + 1] = indices[j + 1], indices[j]
+    return indices
+# -----------------------------------------------
+def informe_general():
+    print("\n--- INFORME GENERAL ---")
+ 
+    if len(nombres) == 0:
+        print("No hay activos registrados.")
+        return
+ 
+    # Obtenemos los indices ordenados con Bubble Sort
+    indices = ordenar_indices()
+ 
+    # Encabezado con f-string
+    print(f"\n{'Activo':<20} {'Ticker':<8} {'Valor USD':>12} {'Metodologia':<16} {'Unidades':>10} {'Puntaje':>8}")
+    print("-" * 76)
+ 
+    for idx in indices:
+        print(f"{nombres[idx]:<20} {tickers[idx]:<8} {valores[idx]:>12,.2f} {metodologias[idx]:<16} {unidades[idx]:>10.2f} {puntajes[idx]:>8}")
+ 
+    print("-" * 76)
+    print(f"Total de activos registrados: {len(nombres)}")
+
+# ============================================
+#  PROGRAMA PRINCIPAL
+# ============================================
+while True:
+    mostrar_menu()
+    opcion= input("selecciona una opcion (1-4, 8 para salir):").strip()
+    if opcion=="1":
+        alta_activo()
+    elif opcion=="2":
+        baja_activo()
+    elif opcion=="3":
+        modificar_activo()
+    elif opcion=="4":
+        informe_general()
+    elif opcion=="8":
+        print("Saliendo del sistema. ¡Hasta pronto!")
+        break
+    else:
+        print("Opcion no invalida, intenta de nuevo.")
