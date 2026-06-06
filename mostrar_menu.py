@@ -10,3 +10,5 @@ def menu():
     print('='*50)
 
     opcion = int(input('Ingrese el numero de la opcion que desea ejecutar: '))
+
+    return opcion
