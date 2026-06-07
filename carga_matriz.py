@@ -1,8 +1,5 @@
-def carga_matriz():
+def carga_matriz(lista):
 
-    from generacion_tabla import generacion_tabla
-
-    tabla_activos = generacion_tabla()
 
     nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ').upper()
 
@@ -53,13 +50,11 @@ def carga_matriz():
             print('El puntaje de confianza debe ser un número entre 1 y 10. Intente nuevamente.')
 
         if datos_validos:
-            tabla_activos.append(activo)
+            lista.append(activo)
             print('Datos del activo agregados correctamente.')
         else: 
             print('Datos inválidos. Intente nuevamente.')
 
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
     
-    return tabla_activos
-
-
+    return lista
