@@ -8,3 +8,5 @@ def ordenar_matriz(lista):
                 indice_max = j
             
         lista[i], lista[indice_max] = lista[indice_max], lista[i]
+
+    return lista
