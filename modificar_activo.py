@@ -24,14 +24,14 @@ def modificar(lista):
                 while opcion_modificar != 8:
                     if opcion_modificar == 1:
                         nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
-                        if nuevo_nombre == ' ':
+                        if nuevo_nombre == '':
                             print('Error: El nombre no puede estar vacio. No se realizaron modificaciones')
                             break
                         else:
                             i[0] = nuevo_nombre
                     elif opcion_modificar == 2:
                         nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
-                        if nuevo_ticker == ' ' or len(nuevo_ticker) < 3:
+                        if nuevo_ticker == '' or len(nuevo_ticker) < 3:
                             print('Error: El ticker no puede estar vacio y debe tener al menos 3 caracteres. No se realizaron modificaciones')
                             break
                         else:
