@@ -51,7 +51,7 @@ def modificar(lista):
                         else:
                             i[3] = nuevo_vol_act
                     elif opcion_modificar == 5:
-                        nuevos_metodos_validos = ['1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL']
+                        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
                         nueva_met_op = int(input(f'Ingrese el numero de la nueva metodología de operación asignada: '))
                         if nueva_met_op < 1 or nueva_met_op > 4:
                             print('Error: La metodología de operación debe ser un número entre 1 y 4. No se realizaron modificaciones')
