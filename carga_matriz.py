@@ -33,21 +33,21 @@ def carga_matriz(lista):
         if nombre == '':
             datos_validos = False
             print('El nombre del activo no puede estar vacío. Intente nuevamente.')
-        if len(ticker) < 3:
+        if len(ticker) < 3 or ticker == '':
             datos_validos = False
-            print('El ticker debe tener al menos 3 caracteres. Intente nuevamente.')
-        if valor_ref <= 0:
+            print('El ticker debe tener al menos 3 caracteres y no puede estar vacío. Intente nuevamente.')
+        if valor_ref <= 0 or valor_ref == '':
             datos_validos = False
-            print('El valor de referencia debe ser un número positivo. Intente nuevamente.')
-        if vol_act < 0:
+            print('El valor de referencia debe ser un número positivo y no puede estar vacío. Intente nuevamente.')
+        if vol_act < 0 or vol_act == '':
             datos_validos = False
-            print('El volumen de actividad no puede ser negativo. Intente nuevamente.')
-        if unidades < 0:
+            print('El volumen de actividad no puede ser negativo y no puede estar vacío. Intente nuevamente.')
+        if unidades < 0 or unidades == '':
             datos_validos = False
-            print('Las unidades totales en tesorería no pueden ser negativas. Intente nuevamente.')
-        if punt_conf < 1 or punt_conf > 10:
+            print('Las unidades totales en tesorería no pueden ser negativas y no pueden estar vacías. Intente nuevamente.')
+        if punt_conf < 1 or punt_conf > 10 or punt_conf == '':
             datos_validos = False
-            print('El puntaje de confianza debe ser un número entre 1 y 10. Intente nuevamente.')
+            print('El puntaje de confianza debe ser un número entre 1 y 10 y no puede estar vacío. Intente nuevamente.')
 
         if datos_validos:
             lista.append(activo)
