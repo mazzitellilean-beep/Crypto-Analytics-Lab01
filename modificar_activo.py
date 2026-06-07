@@ -71,8 +71,21 @@ def modificar(lista):
                             i[6] = nuevo_punt_conf
                     else:
                         print("Opción no válida. Intente nuevamente.")
+                
+                print("1. Cambiar nombre del activo")
+                print("2. Cambiar ticker")
+                print("3. Cambiar valor de referencia")
+                print("4. Cambiar volumen de actividad")
+                print("5. Cambiar metodología de operación")
+                print("6. Cambiar unidades en tesorería")
+                print("7. Cambiar puntaje de confianza (1-10)")
+                print("8. Salir")
 
-                    opcion_modificar = int(input("Ingrese el número de la opción que desea modificar o 8 para salir: "))
+                opcion_modificar = int(input("Ingrese el número de la opción que desea modificar o 8 para salir: "))
+
+            else:
+                print('Activo no encontrado. Intente nuevamente.')
+                break
                 
         activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
     
