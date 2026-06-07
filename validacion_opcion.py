@@ -2,7 +2,7 @@ def verificacion_menu (opcion, lista):
     
     if opcion == 1:
         from carga_matriz import carga_matriz
-        lista = carga_matriz()
+        lista = carga_matriz(lista)
     elif opcion == 2:
         from baja_activo import eliminar
         ticker = input('Ingrese el ticker del activo que desea eliminar: ')
