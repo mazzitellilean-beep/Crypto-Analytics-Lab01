@@ -1,5 +1,9 @@
 def mostrar_matriz (lista): 
 
+    from ordenar_matriz import ordenar_matriz
+
+    lista = ordenar_matriz(lista)
+
     print('Nombre del activo | Ticker | Valor de referencia | Volumen de actividad | Metodología de operación | Unidades totales en tesorería | Puntaje de confianza')
 
     for i in lista:
