@@ -21,6 +21,10 @@ def modificar(lista):
 
                 opcion_modificar = int(input("Ingrese el número de la opción que desea modificar: "))
 
+                if opcion_modificar < 1 or opcion_modificar > 8:
+                    print("Opción no válida. Intente nuevamente.")
+                    continue
+
                 while opcion_modificar != 8:
                     if opcion_modificar == 1:
                         nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
@@ -86,6 +90,9 @@ def modificar(lista):
             print("Activo no encontrado. Intente nuevamente.")
 
         activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+
+        if opcion_modificar < 1 or opcion_modificar > 8:
+            print("Opción no válida. Intente nuevamente.")
+            continue
     
     return lista
-
