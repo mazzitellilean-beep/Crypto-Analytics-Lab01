@@ -1,4 +1,4 @@
-# Crypto-Analytics-Lab01
+Crypto-Analytics-Lab01
 ### Sistema de Gestión y Análisis de Activos Digitales
 
 Proyecto desarrollado para la materia de Pnesamiento Computacional, Algoritmia y Programación — Fase 1 (Versión Inicial).
