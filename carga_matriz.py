@@ -10,7 +10,8 @@ def carga_matriz(lista):
         ticker = input('Ingrese el ticker del activo: ').upper()
         valor_ref = float(input('Ingres el valor de referencia base (Ej: USD) del activo: '))
         vol_act = float(input('Ingrese el volumen de actividad de las ultimas 24hs: '))
-        metodos_validos = ['1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL']
+        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
+        metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
         met_op = int(input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: '))
         unidades = float(input('Ingrese las unidades totales en tesoreria: '))
         punt_conf = int(input('Ingrese el puntaje de confianza del 1 al 10: '))
@@ -18,6 +19,7 @@ def carga_matriz(lista):
         if met_op < 1 or met_op > 4:
             datos_validos = False
             print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
+            break
 
         #La variable activo podria eliminarse y directamente agregar los datos a la tabla, pero queda ordenado 
         activo = [
