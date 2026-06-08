@@ -35,7 +35,7 @@ def carga_matriz(lista):
         if nombre == '':
             datos_validos = False
             print('El nombre del activo no puede estar vacío. Intente nuevamente.')
-        if len(ticker) < 3 or ticker == '':
+        if len(ticker) < 3 or len(ticker) > 5 or ticker == '':
             datos_validos = False
             print('El ticker debe tener al menos 3 caracteres y no puede estar vacío. Intente nuevamente.')
         if valor_ref <= 0 or valor_ref == '':
