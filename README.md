@@ -96,8 +96,13 @@ El sistema inicia con 20 activos de ejemplo que incluyen criptomonedas (Bitcoin,
 ## Autores
 
 Proyecto desarrollado por el **Equipo 01** como parte del trabajo práctico de la materia Programación — Primer año.
+
 Bejarano, Facundo
+
 Cabornero, Santiago
+
 Lopez Rubio, Federico
+
 Mazzitelli, Leandro
+
 Oviedo, Luciano
