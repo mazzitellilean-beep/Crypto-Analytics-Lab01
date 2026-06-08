@@ -15,17 +15,23 @@ Crypto-Analytics Lab es una herramienta de consola que permite gestionar una car
 
 El proyecto está dividido en varios archivos `.py`, cada uno con una responsabilidad específica:
 
-| Archivo | ¿Qué hace? |
-|---|---|
-| `main.py` | Punto de entrada del programa. Inicializa la tabla y gestiona el ciclo del menú principal. |
-| `mostrar_menu.py` | Muestra el menú principal y captura la opción elegida por el usuario. |
-| `validacion_opcion.py` | Recibe la opción del menú y llama a la función correspondiente. |
-| `generacion_tabla.py` | Genera la tabla inicial con activos precargados. |
-| `carga_matriz.py` | Permite registrar nuevos activos ingresando los datos por teclado. Valida Border Cases e imprime el respectivo mensaje de error. |
-| `baja_activo.py` | Permite eliminar un activo buscándolo por su ticker. |
-| `modificar_activo.py` | Permite modificar los datos de un activo existente buscándolo por nombre. |
-| `mostrar_matriz.py` | Muestra todos los activos en formato de tabla ordenada. |
-| `ordenar_matriz.py` | Ordena la lista por puntaje de confianza (de mayor a menor) y luego por nombre (alfabéticamente). |
+ `main.py` -> Punto de entrada del programa. Inicializa la tabla y gestiona el ciclo del menú principal.
+
+ `mostrar_menu.py` -> Muestra el menú principal y captura la opción elegida por el usuario. 
+
+ `validacion_opcion.py` -> Recibe la opción del menú y llama a la función correspondiente. 
+
+ `generacion_tabla.py` -> Genera la tabla inicial con activos precargados. 
+
+ `carga_matriz.py` -> Permite registrar nuevos activos ingresando los datos por teclado. Valida Border Cases e imprime el respectivo mensaje de error. 
+
+ `baja_activo.py` -> Permite eliminar un activo buscándolo por su ticker. 
+
+ `modificar_activo.py` -> Permite modificar los datos de un activo existente buscándolo por nombre. 
+
+ `mostrar_matriz.py` -> Muestra todos los activos en formato de tabla ordenada. 
+
+ `ordenar_matriz.py` -> Ordena la lista por puntaje de confianza (de mayor a menor) y luego por nombre (alfabéticamente). 
 
 ---
 
@@ -33,11 +39,7 @@ El proyecto está dividido en varios archivos `.py`, cada uno con una responsabi
 
 1. Asegurarse de tener Python instalado (versión 3.x).
 2. Descargar o clonar todos los archivos del proyecto en una misma carpeta.
-3. Abrir una terminal en esa carpeta y ejecutar:
-
-```
-python main.py
-```
+3. Abrir una terminal en esa carpeta y ejecutar: `python main.py`
 
 4. El programa mostrará el menú principal y esperará que el usuario ingrese una opción.
 
@@ -63,15 +65,21 @@ python main.py
 
 Cada activo almacena los siguientes datos:
 
-| Campo | Descripción | Restricciones |
-|---|---|---|
-| Nombre | Nombre oficial del activo | No puede estar vacío |
-| Ticker | Símbolo corto del activo (ej: BTC) | Entre 3 y 5. No puede estar vacio |
-| Valor de referencia | Precio en USD | Debe ser mayor a 0 |
-| Volumen 24hs | Dinero operado en el último día | No puede ser negativo |
-| Metodología | Estrategia de operación asignada | Scalping / Day Trading / Swing Trading / HODL |
-| Unidades en tesorería | Cantidad del activo en cartera | No puede ser negativo |
-| Puntaje de confianza | Evaluación interna del activo | Número entero del 1 al 10 |
+ Campo  Descripción  Restricciones 
+
+ `Nombre` -> Nombre oficial del activo  No puede estar vacío 
+
+ `Ticker` -> Símbolo corto del activo (ej: BTC)  Entre 3 y 5. No puede estar vacio 
+
+ `Valor de referencia` -> Precio en USD  Debe ser mayor a 0 
+
+ `Volumen 24hs` -> Dinero operado en el último día  No puede ser negativo 
+
+ `Metodología` -> Estrategia de operación asignada  Scalping / Day Trading / Swing Trading / HODL 
+
+ `Unidades en tesorería` -> Cantidad del activo en cartera  No puede ser negativo 
+
+ `Puntaje de confianza` -> Evaluación interna del activo  Número entero del 1 al 10 
 
 ---
 
