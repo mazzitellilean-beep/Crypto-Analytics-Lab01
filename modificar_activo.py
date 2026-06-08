@@ -51,6 +51,7 @@ def modificar(lista):
                         else:
                             i[3] = nuevo_vol_act
                     elif opcion_modificar == 5:
+                        nuevos_metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL'] 
                         print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
                         nueva_met_op = int(input(f'Ingrese el numero de la nueva metodología de operación asignada: '))
                         if nueva_met_op < 1 or nueva_met_op > 4:
@@ -90,9 +91,5 @@ def modificar(lista):
             print("Activo no encontrado. Intente nuevamente.")
 
         activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
-
-        if opcion_modificar < 1 or opcion_modificar > 8:
-            print("Opción no válida. Intente nuevamente.")
-            continue
     
     return lista
