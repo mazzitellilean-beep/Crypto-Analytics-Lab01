@@ -1,3 +1,13 @@
+def menu_modificar():
+    print("1. Cambiar nombre del activo")
+    print("2. Cambiar ticker")
+    print("3. Cambiar valor de referencia")
+    print("4. Cambiar volumen de actividad")
+    print("5. Cambiar metodología de operación")
+    print("6. Cambiar unidades en tesorería")
+    print("7. Cambiar puntaje de confianza (1-10)")
+    print("8. Salir")
+
 def modificar(lista):
 
     activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
@@ -10,15 +20,8 @@ def modificar(lista):
             if i[0].upper() == activo_a_cambiar.upper():
                 activo_encontrado = True
                 print(f"Activo encontrado: {i}")
-                print("1. Cambiar nombre del activo")
-                print("2. Cambiar ticker")
-                print("3. Cambiar valor de referencia")
-                print("4. Cambiar volumen de actividad")
-                print("5. Cambiar metodología de operación")
-                print("6. Cambiar unidades en tesorería")
-                print("7. Cambiar puntaje de confianza (1-10)")
-                print("8. Salir")
-
+                menu_modificar()
+             
                 opcion_modificar = int(input("Ingrese el número de la opción que desea modificar: "))
 
                 if opcion_modificar < 1 or opcion_modificar > 8:
@@ -76,16 +79,8 @@ def modificar(lista):
                         print("Opción no válida. Intente nuevamente.")
                 
                     if opcion_modificar != 8:
-                       print("1. Cambiar nombre del activo")
-                       print("2. Cambiar ticker")
-                       print("3. Cambiar valor de referencia")
-                       print("4. Cambiar volumen de actividad")
-                       print("5. Cambiar metodología de operación")
-                       print("6. Cambiar unidades en tesorería")
-                       print("7. Cambiar puntaje de confianza (1-10)")
-                       print("8. Salir")
-
-                       opcion_modificar = int(input("Ingrese el número de la opción que desea modificar o 8 para salir: "))
+                        menu_modificar()
+                        opcion_modificar = int(input("Ingrese el número de la opción que desea modificar o 8 para salir: "))
         
         if not activo_encontrado:
             print("Activo no encontrado. Intente nuevamente.")
