@@ -12,3 +12,6 @@ def main():
         opcion = funciones.menu()
 
     print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
+
+if __name__ == "__main__":
+    main()
