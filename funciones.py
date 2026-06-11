@@ -11,18 +11,26 @@ def eliminar(matriz, ticker):
     while ticker != 'fin':
 
         activos = busqueda_ticker(matriz, ticker)
-        if activo != False:
+        if activos != False:
             if len(activos) > 1:
-                print(activos)
+                print(f"Activos con ticker {ticker} encontrados:")
+                for i in range(len(activos)):
+                    print(f"{i+1}.")
+                    print(f"Nombre: \n", activos[i][0])
+                    print(f"Metodologia: \n", activos[i][4])
+
                 opcion = input("Escoja el ticker a eliminar por su metodologia: ")
-                for i in matriz:
-                    if matriz[i][4] == opcion and matriz[i][1] == ticker:
-                        matriz.remove(i)
-                        print("Activo eliminado exitosamente")
-                        return
+
+                while not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 0:
+                    print("Opción no válida. Intente nuevamente.")
+                    opcion = input("Escoja el ticker a eliminar por su metodologia: ")
+
+                matriz.remove(activos[int(opcion)-1])
+                print("Activo eliminado exitosamente")
+
             elif len(activos) == 1:
                 for i in matriz:
-                    if matriz[i][1] == activos:
+                    if matriz[i][1] == activos[1]:
                         matriz.remove(i)
                         print("Activo eliminado exitosamente")
 
@@ -60,6 +68,24 @@ def modificar_activo(matriz, nombre):
 
         if activo_encontrado:
 
+            if len(activo_encontrado) > 1:
+                print(f"Activos con nombre {nombre} encontrados:")
+                for i in range(len(activo_encontrado)):
+                    print(f"{i+1}.")
+                    print(f"Nombre: \n", activo_encontrado[i][0])
+                    print(f"Metodologia: \n", activo_encontrado[i][4])
+
+                opcion = input("Escoja el nombre a eliminar por su metodologia: ")
+
+                while not opcion.isnumeric() or int(opcion) > len(activo_encontrado) or int(opcion) < 0:
+                    print("Opción no válida. Intente nuevamente.")
+                    opcion = input("Escoja el nombre a eliminar por su metodologia: ")
+                activo_encontrado = activo_encontrado[int(opcion)-1]
+        
+            elif len(activo_encontrado) == 1:
+
+                activo_encontrado = activo_encontrado[0]
+
             menu_modificar()
             opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
 
@@ -77,8 +103,8 @@ def modificar_activo(matriz, nombre):
                 if int(opcion) == 1:
                     nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
                     if validar_nombre(nuevo_nombre):
-                       activo_encontrado[0] = nuevo_nombre
-                       print("Nombre del activo modificado exitosamente.")
+                        activo_encontrado[0] = nuevo_nombre
+                        print("Nombre del activo modificado exitosamente.")
 
                 elif int(opcion) == 2:
                     nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
@@ -132,7 +158,6 @@ def modificar_activo(matriz, nombre):
 
         nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
 
-
 def mostrar_matriz (matriz):
 
     matriz = ordenar_matriz(matriz)
@@ -165,7 +190,7 @@ def busqueda_ticker(matriz, ticker):
             tickers_encontrados.append(i)
 
     if len(tickers_encontrados) == 1:
-        print(f"Activo encontrado: {i[0]}")
+        print(f"Activo encontrado: {i}")
         return tickers_encontrados[0]
     elif len(tickers_encontrados) > 1:
         print("Se encontraron múltiples activos con el mismo ticker.")
@@ -176,14 +201,21 @@ def busqueda_ticker(matriz, ticker):
 
 def busqueda_nombre(matriz, nombre):
 
-    for i in matriz:
-            
-            if i[0].upper() == nombre.upper():
+    nombres_encontrados = []
 
-                activo_encontrado = i
-                print(f"Activo encontrado: {i}")
-                return activo_encontrado
-    else:
+    for i in matriz:
+
+        if i[0].upper() == nombre.upper():
+
+            nombres_encontrados.append(i)
+
+    if len(nombres_encontrados) == 1:
+        print(f"Activo encontrado: {i}")
+        return nombres_encontrados[0]
+    elif len(nombres_encontrados) > 1:
+        print("Se encontraron múltiples activos con el mismo nombre.")
+        return nombres_encontrados
+    elif len(nombres_encontrados) == 0:
         print("Activo no encontrado.")
         return False
 
