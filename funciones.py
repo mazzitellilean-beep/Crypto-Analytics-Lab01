@@ -1,4 +1,5 @@
 
+
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -278,10 +279,20 @@ def menu():
     print("8. Salir")
     print('='*50)
 
+    opciones_validas = ['1', '2', '3', '4', '8']
+
     opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
-    while not opcion.isnumeric() or int(opcion) < 1 or (int(opcion) > 4 and int(opcion) != 8):
-        print("Opción inválida. Intente nuevamente.")
+
+    if opcion in opciones_validas:
+        while not opcion.isnumeric() or int(opcion) < 1 or (int(opcion) > 4 and int(opcion) != 8):
+            print("Opción inválida. Intente nuevamente.\n")
+            opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
+    else:
+        print("Opción inválida. Intente nuevamente.\n")
         opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
+        while not opcion.isnumeric() or int(opcion) < 1 or (int(opcion) > 4 and int(opcion) != 8):
+            print("Opción inválida. Intente nuevamente.\n")
+            opcion = input('Ingrese el numero de la opcion que desea ejecutar: ') 
 
     return int(opcion)
 
@@ -289,15 +300,18 @@ def verificacion_menu (opcion, matriz):
 
     if opcion == 1:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        alta_activo(matriz, nombre)
+        if validar_nombre(nombre):
+           alta_activo(matriz, nombre)
 
     elif opcion == 2:
         ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
-        eliminar(matriz, ticker)
+        if validar_ticker(ticker):
+           eliminar(matriz, ticker)
 
     elif opcion == 3:
         nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
-        modificar_activo(matriz, nombre)
+        if validar_nombre(nombre):
+           modificar_activo(matriz, nombre)
 
     elif opcion == 4:
         mostrar_matriz(matriz)
