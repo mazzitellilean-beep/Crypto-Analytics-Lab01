@@ -10,12 +10,21 @@ def eliminar(matriz, ticker):
 
     while ticker != 'fin':
 
-        activo = busqueda_ticker(matriz, ticker)
+        activos = busqueda_ticker(matriz, ticker)
         if activo != False:
-            matriz.remove(activo)
-            print("Activo eliminado exitosamente")
-        else:
-            print("Activo no encontrado. Intente nuevamente.")
+            if len(activos) > 1:
+                print(activos)
+                opcion = input("Escoja el ticker a eliminar por su metodologia: ")
+                for i in matriz:
+                    if matriz[i][4] == opcion and matriz[i][1] == ticker:
+                        matriz.remove(i)
+                        print("Activo eliminado exitosamente")
+                        return
+            elif len(activos) == 1:
+                for i in matriz:
+                    if matriz[i][1] == activos:
+                        matriz.remove(i)
+                        print("Activo eliminado exitosamente")
 
         ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ')
 
@@ -147,15 +156,21 @@ def mostrar_matriz (matriz):
 
 def busqueda_ticker(matriz, ticker):
 
+    tickers_encontrados = []
+
     for i in matriz:
-            
-            if i[1].upper() == ticker.upper():
 
-                activo_encontrado = i
-                print(f"Activo encontrado: {i}")
-                return activo_encontrado
+        if i[1].upper() == ticker.upper():
 
-    else:
+            tickers_encontrados.append(i)
+
+    if len(tickers_encontrados) == 1:
+        print(f"Activo encontrado: {i[0]}")
+        return tickers_encontrados[0]
+    elif len(tickers_encontrados) > 1:
+        print("Se encontraron múltiples activos con el mismo ticker.")
+        return tickers_encontrados
+    elif len(tickers_encontrados) == 0:
         print("Activo no encontrado.")
         return False
 
