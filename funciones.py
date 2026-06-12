@@ -393,9 +393,9 @@ def verificacion_menu(opcion, matriz):
     else:
         print("Opcion inválida. Por favor, ingrese una opcion del menu.")
 
-#=======================================================
-#              FUNCION MODIFICAR ORIGINAL
-#=======================================================
+#=================================================================================
+#             FUNCION MODIFICAR ORIGINAL (solicitado por el docente)
+#=================================================================================
 
 #def modificar(lista):
 
