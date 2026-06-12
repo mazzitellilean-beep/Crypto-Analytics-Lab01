@@ -9,6 +9,7 @@ def eliminar(matriz, ticker):
     while ticker != 'fin':
 
         activos = busqueda_ticker(matriz, ticker)
+
         if activos != False:
             if len(activos) > 1:
                 print(f"Activos con ticker {ticker} encontrados:")
@@ -19,8 +20,7 @@ def eliminar(matriz, ticker):
 
                 opcion = input("Escoja el numero del ticker a eliminar por su metodologia: ")
 
-                while not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 0:
-                    print("Opción no válida. Intente nuevamente.")
+                while not validar_opcion_eliminar(opcion, activos):
                     opcion = input("Escoja el numero del ticker a eliminar por su metodologia: ")
 
                 matriz.remove(activos[int(opcion)-1])
@@ -32,7 +32,7 @@ def eliminar(matriz, ticker):
                         matriz.remove(i)
                         print("Activo eliminado exitosamente")
 
-        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: \n')
+        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ')
 
 def alta_activo(matriz, nombre):
 
@@ -303,6 +303,13 @@ def validar_repetidos(nombre, ticker, metodologia, matriz):
             return False
     else:
         return True
+
+def validar_opcion_eliminar(opcion, activos):
+    if opcion == '' or not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 0:
+        print("Opción no válida. Intente nuevamente.")
+        return False
+    else: return True
+        
 
 def menu_modificar():
 
