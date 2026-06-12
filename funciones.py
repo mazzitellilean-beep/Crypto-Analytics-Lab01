@@ -1,6 +1,5 @@
 
 
-
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -378,19 +377,17 @@ def verificacion_menu (opcion, matriz):
 
     elif opcion == 2:
         ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
-        if validar_ticker(ticker):
-           eliminar(matriz, ticker)
-        else:
-            while not validar_ticker(ticker):
-                ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
+        while not validar_ticker(ticker):
+            ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
+        
+        eliminar(matriz, ticker)
 
     elif opcion == 3:
-        nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
-        if validar_nombre(nombre):
-           modificar_activo(matriz, nombre)
-        else:
-            while not validar_nombre(nombre):
-                nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+        nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
+        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+            nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
+        if nombre.lower() != 'fin':
+            alta_activo(matriz, nombre)
 
     elif opcion == 4:
         mostrar_matriz(matriz)
@@ -500,7 +497,5 @@ def verificacion_menu (opcion, matriz):
             #print("Activo no encontrado. Intente nuevamente.")
 
         #activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
-    
-    #return lista
     
     #return lista
