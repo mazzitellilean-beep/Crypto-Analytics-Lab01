@@ -1,11 +1,11 @@
 
+
+
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
 
-def eliminar(matriz, ticker):
-
-    
+def eliminar(matriz, ticker):   
 
     while ticker != 'fin':
 
@@ -18,7 +18,7 @@ def eliminar(matriz, ticker):
                     print(f"Nombre: \n", activos[i][0])
                     print(f"Metodologia: \n", activos[i][4])
 
-                opcion = input("Escoja el ticker a eliminar por su metodologia: ")
+                opcion = input("Escoja el numero del ticker a eliminar por su metodologia: ")
 
                 while not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 0:
                     print("Opción no válida. Intente nuevamente.")
@@ -37,26 +37,44 @@ def eliminar(matriz, ticker):
 
 def alta_activo(matriz, nombre):
 
-    while nombre.lower() != 'fin':
+    while validar_nombre(nombre) and nombre.lower() != 'fin':
+        
+        ticker = input('Ingrese el ticker del activo: ').upper()
 
-        if validar_nombre(nombre):
+        while not validar_ticker(ticker):
             ticker = input('Ingrese el ticker del activo: ').upper()
-            if validar_ticker(ticker):
-                valor_ref = input('Ingrese el valor de referencia base (Ej: USD) del activo: ')
-                if validar_valor(valor_ref):
-                    vol_act = input('Ingrese el volumen de actividad de las ultimas 24hs: ')
-                    if validar_volumen(vol_act):
-                        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                        metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
-                        met_op = input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: ')
-                        if validar_metodologia(met_op):
-                            unidades = input('Ingrese las unidades totales en tesoreria: ')
-                            if validar_unidades(unidades):
-                                punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
-                                if validar_puntaje(punt_conf):
-                                    activo = [nombre,ticker,valor_ref,vol_act,metodos_validos[int(met_op) - 1],unidades,punt_conf]
-                                    matriz.append(activo)
-                                    print('Datos del activo agregados correctamente.')
+
+        valor_ref = input('Ingrese el valor de referencia base (Ej: USD) del activo: ')
+
+        while not validar_valor(valor_ref):
+            valor_ref = input('Ingrese el valor de referencia base (Ej: USD) del activo: ')
+
+        vol_act = input('Ingrese el volumen de actividad de las ultimas 24hs: ')
+
+        while not validar_volumen(vol_act):
+            vol_act = input('Ingrese el volumen de actividad de las ultimas 24hs: ')
+                    
+        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
+        metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
+        met_op = input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: ')
+        
+        while not validar_metodologia(met_op):
+            print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
+            met_op = input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: ')
+                        
+        unidades = input('Ingrese las unidades totales en tesoreria: ')
+        while not validar_unidades(unidades):
+            unidades = input('Ingrese las unidades totales en tesoreria: ')
+                           
+        punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
+        while not validar_puntaje(punt_conf):
+            punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
+        
+        if validar_repetidos(nombre, ticker, met_op, matriz):
+
+            activo = [nombre,ticker,valor_ref,vol_act,metodos_validos[int(met_op) - 1],unidades,punt_conf]
+            matriz.append(activo)
+            print('Datos del activo agregados correctamente.')
 
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
 
@@ -226,14 +244,14 @@ def busqueda_nombre(matriz, nombre):
         return False
 
 def validar_nombre(nombre):
-    if not nombre.isalpha() or nombre == '':
+    if nombre == ''  or not nombre.isalpha():
         print('El nombre del activo no puede estar vacío ni contener caracteres no alfabéticos. Intente nuevamente.')
         return False
     else:
         return True
 
 def validar_ticker(ticker):
-    if not ticker.isalpha() or ticker == '' or len(ticker) < 3 or len(ticker) > 5:
+    if ticker == '' or not ticker.isalpha() or len(ticker) < 3 or len(ticker) > 5:
         print('El ticker debe tener entre 3 y 5 caracteres, no puede estar vacío, y solo puede contener caracteres alfabéticos. Intente nuevamente.')
         return False
     else:
@@ -247,14 +265,14 @@ def validar_valor(valor_ref):
         return True
 
 def validar_volumen(volumen):
-    if not volumen.isnumeric() or volumen == '' or int(volumen) < 0 :
+    if volumen == '' or not volumen.isnumeric() or int(volumen) < 0 :
         print('El volumen de actividad debe ser un número positivo, y no puede estar vacío. Intente nuevamente.')
         return False
     else: 
         return True
 
 def validar_metodologia(metodologia):
-    if  not metodologia.isnumeric() or metodologia == '' or int(metodologia) > 4 or int(metodologia) < 1:
+    if metodologia == '' or not metodologia.isnumeric() or int(metodologia) > 4 or int(metodologia) < 1:
         print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
         return False
     else:
@@ -268,7 +286,7 @@ def validar_unidades(unidades):
         return True
     
 def validar_puntaje(puntaje):
-    if not puntaje.isnumeric() or puntaje == '' or int(puntaje) < 1 or int(puntaje) > 10 :
+    if puntaje == '' or not puntaje.isnumeric() or int(puntaje) < 1 or int(puntaje) > 10 :
         print('El puntaje de confianza debe ser un número entre 1 y 10, y no puede estar vacío. Intente nuevamente.')
         return False
     else:
@@ -353,18 +371,26 @@ def verificacion_menu (opcion, matriz):
 
     if opcion == 1:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        if validar_nombre(nombre):
-           alta_activo(matriz, nombre)
+        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+            nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
+        if nombre.lower() != 'fin':
+            alta_activo(matriz, nombre)
 
     elif opcion == 2:
         ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
         if validar_ticker(ticker):
            eliminar(matriz, ticker)
+        else:
+            while not validar_ticker(ticker):
+                ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
 
     elif opcion == 3:
         nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
         if validar_nombre(nombre):
            modificar_activo(matriz, nombre)
+        else:
+            while not validar_nombre(nombre):
+                nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
 
     elif opcion == 4:
         mostrar_matriz(matriz)
@@ -474,5 +500,7 @@ def verificacion_menu (opcion, matriz):
             #print("Activo no encontrado. Intente nuevamente.")
 
         #activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+    
+    #return lista
     
     #return lista
