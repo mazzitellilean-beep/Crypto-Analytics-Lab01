@@ -206,7 +206,7 @@ def busqueda_ticker(matriz, ticker):
 
     for i in matriz:
 
-        if i[1].upper() == ticker.upper():
+        if i[1].upper() == ticker.upper() and i[5] == 0:
 
             tickers_encontrados.append(i)
 
@@ -219,7 +219,7 @@ def busqueda_ticker(matriz, ticker):
         return tickers_encontrados
     
     elif len(tickers_encontrados) == 0:
-        print("Activo no encontrado.")
+        print("Activo no encontrado o tiene unidades en tesoreria.")
         return False
 
 def busqueda_nombre(matriz, nombre):
@@ -394,7 +394,7 @@ def verificacion_menu (opcion, matriz):
         while not validar_nombre(nombre) and nombre.lower() != 'fin':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
         if nombre.lower() != 'fin':
-            alta_activo(matriz, nombre)
+            modificar_activo(matriz, nombre)
 
     elif opcion == 4:
         mostrar_matriz(matriz)
