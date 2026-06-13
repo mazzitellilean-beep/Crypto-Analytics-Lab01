@@ -1,40 +1,37 @@
 
-
-
-
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
 
-def eliminar(matriz, ticker):   
+def eliminar(matriz, ticker):
 
-    while ticker != 'fin':
+    """Elimina un activo de la matriz según su ticker. Repite hasta que el usuario ingrese 'fin'."""
+
+    while validar_ticker(ticker) and ticker != 'FIN':
 
         activos = busqueda_ticker(matriz, ticker)
 
         if activos != False:
             if len(activos) > 1:
-                print(f"Activos con ticker {ticker} encontrados:")
-                for i in range(len(activos)):
-                    print(f"{i+1}.")
-                    print(f"Nombre: \n", activos[i][0])
-                    print(f"Metodologia: \n", activos[i][4])
+                menu_repetidos(activos)
 
                 opcion = input("Escoja el numero del ticker a eliminar por su metodologia: ")
 
-                while not validar_opcion_eliminar(opcion, activos):
+                while not validar_opcion_repetidos(opcion, activos):
                     opcion = input("Escoja el numero del ticker a eliminar por su metodologia: ")
 
                 matriz.remove(activos[int(opcion)-1])
                 print("Activo eliminado exitosamente")
 
-            elif len(activos) == 1:              
+            elif len(activos) == 1:
                 matriz.remove(activos[0])
                 print("Activo eliminado exitosamente")
 
-        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ')
+        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ').upper()
 
 def alta_activo(matriz, nombre):
+
+    """Solicita los datos de un nuevo activo y lo agrega a la matriz. Repite hasta que el usuario ingrese 'fin'."""
 
     while validar_nombre(nombre) and nombre.lower() != 'fin':
         
@@ -64,14 +61,14 @@ def alta_activo(matriz, nombre):
         unidades = input('Ingrese las unidades totales en tesoreria: ')
         while not validar_unidades(unidades):
             unidades = input('Ingrese las unidades totales en tesoreria: ')
-                  
+                           
         punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
         while not validar_puntaje(punt_conf):
             punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
         
         if validar_repetidos(nombre, ticker, met_op, matriz):
 
-            activo = [nombre,ticker,float(valor_ref),int(vol_act),metodos_validos[int(met_op) - 1],float(unidades),int(punt_conf)]
+            activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act),metodos_validos[int(met_op) - 1],float(unidades),int(punt_conf)]
             matriz.append(activo)
             print('Datos del activo agregados correctamente.')
 
@@ -86,122 +83,119 @@ def modificar_activo(matriz, nombre):
 
     activo_encontrado = busqueda_nombre(matriz, nombre)
 
-    while validar_nombre(nombre) and nombre.lower() != 'fin':
+    while activo_encontrado and validar_nombre(nombre) and nombre.lower() != 'fin':
 
-        if activo_encontrado:
+        if len(activo_encontrado) > 1:
+            menu_repetidos(activo_encontrado)
 
-            if len(activo_encontrado) > 1:
-                print(f"Activos con nombre {nombre} encontrados:")
-                for i in range(len(activo_encontrado)):
-                    print(f"{i+1}.")
-                    print(f"Nombre: \n", activo_encontrado[i][0])
-                    print(f"Metodologia: \n", activo_encontrado[i][4])
+            opcion = input("Escoja el nombre a eliminar por su metodologia: ")
 
+            while not validar_opcion_repetidos(opcion, activo_encontrado):
                 opcion = input("Escoja el nombre a eliminar por su metodologia: ")
 
-                while not validar_opcion_eliminar(opcion, activo_encontrado):
-                    opcion = input("Escoja el nombre a eliminar por su metodologia: ")
-
-                activo_encontrado = activo_encontrado[int(opcion)-1]
+            activo_encontrado = activo_encontrado[int(opcion)-1]
         
-            elif len(activo_encontrado) == 1:
+        elif len(activo_encontrado) == 1:
 
-                activo_encontrado = activo_encontrado[0]
+            activo_encontrado = activo_encontrado[0]
 
+        menu_modificar()
+        opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
+
+        while not validar_opcion_modificar(opcion):
+            menu_modificar()
+            opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
+
+        while int(opcion) != 8:
+
+            if int(opcion) == 1:
+                nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
+                while not validar_nombre(nuevo_nombre):
+                    nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
+
+                activo_encontrado[0] = nuevo_nombre
+                print("Nombre del activo modificado exitosamente.")
+
+            elif int(opcion) == 2:
+                nuevo_ticker = input("Ingrese el nuevo ticker del activo: ").upper()
+                while not validar_ticker(nuevo_ticker):
+                    nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
+                    
+                activo_encontrado[1] = nuevo_ticker
+                print("Ticker del activo modificado exitosamente.")
+
+            elif int(opcion) == 3:
+                nuevo_valor_ref = input("Ingrese el nuevo valor de referencia del activo: ")
+                while not validar_valor(nuevo_valor_ref):
+                    nuevo_valor_ref = input("Ingrese el nuevo valor de referencia del activo: ")
+                    
+                activo_encontrado[2] = float(nuevo_valor_ref)
+                print("Valor de referencia del activo modificado exitosamente.")
+
+            elif int(opcion) == 4:
+                nuevo_vol_act = input("Ingrese el nuevo volumen de actividad del activo: ")
+                while not validar_volumen(nuevo_vol_act):
+                    nuevo_vol_act = input("Ingrese el nuevo volumen de actividad del activo: ")
+                    
+                activo_encontrado[3] = int(nuevo_vol_act)
+                print("Volumen de actividad del activo modificado exitosamente.")
+
+            elif int(opcion) == 5:
+                metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL'] 
+                print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
+                nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
+                while not validar_metodologia(nueva_met_op):
+                    print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
+                    nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
+
+                activo_encontrado[4] = metodos_validos[int(nueva_met_op) - 1]
+                print("Metodología de operación del activo modificada exitosamente.")
+
+            elif int(opcion) == 6:
+                nuevas_unidades = input("Ingrese las nuevas unidades en tesorería del activo: ")
+                while not validar_unidades(nuevas_unidades):
+                    nuevas_unidades = input("Ingrese las nuevas unidades en tesorería del activo: ")
+                    
+                activo_encontrado[5] = float(nuevas_unidades)
+                print("Unidades en tesorería del activo modificadas exitosamente.")                      
+
+            elif int(opcion) == 7:
+                nuevo_punt_conf = input("Ingrese el nuevo puntaje de confianza del activo (1-10): ")
+                while not validar_puntaje(nuevo_punt_conf):
+                    nuevo_punt_conf = input("Ingrese el nuevo puntaje de confianza del activo (1-10): ")
+                    
+                activo_encontrado[6] = int(nuevo_punt_conf)
+                print("Puntaje de confianza del activo modificado exitosamente.")
+
+                
             menu_modificar()
             opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
 
             while not validar_opcion_modificar(opcion):
                 opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
 
-            while int(opcion) != 8:
-
-                if int(opcion) == 1:
-                    nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
-                    while not validar_nombre(nuevo_nombre):
-                        nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
-
-                    activo_encontrado[0] = nuevo_nombre
-                    print("Nombre del activo modificado exitosamente.")
-
-                elif int(opcion) == 2:
-                    nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
-                    while not validar_ticker(nuevo_ticker):
-                        nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
-                    
-                    activo_encontrado[1] = nuevo_ticker
-                    print("Ticker del activo modificado exitosamente.")
-
-                elif int(opcion) == 3:
-                    nuevo_valor_ref = input("Ingrese el nuevo valor de referencia del activo: ")
-                    while not validar_valor(nuevo_valor_ref):
-                        nuevo_valor_ref = input("Ingrese el nuevo valor de referencia del activo: ")
-                    
-                    activo_encontrado[2] = float(nuevo_valor_ref)
-                    print("Valor de referencia del activo modificado exitosamente.")
-
-                elif int(opcion) == 4:
-                    nuevo_vol_act = input("Ingrese el nuevo volumen de actividad del activo: ")
-                    while not validar_volumen(nuevo_vol_act):
-                        nuevo_vol_act = input("Ingrese el nuevo volumen de actividad del activo: ")
-                    
-                    activo_encontrado[3] = int(nuevo_vol_act)
-                    print("Volumen de actividad del activo modificado exitosamente.")
-
-                elif int(opcion) == 5:
-                    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL'] 
-                    print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                    nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
-                    while not validar_metodologia(nueva_met_op):
-                        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                    nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
-
-                    activo_encontrado[4] = metodos_validos[int(nueva_met_op) - 1]
-                    print("Metodología de operación del activo modificada exitosamente.")
-
-                elif int(opcion) == 6:
-                    nuevas_unidades = input("Ingrese las nuevas unidades en tesorería del activo: ")
-                    while not validar_unidades(nuevas_unidades):
-                        nuevas_unidades = input("Ingrese las nuevas unidades en tesorería del activo: ")
-                    
-                    activo_encontrado[5] = float(nuevas_unidades)
-                    print("Unidades en tesorería del activo modificadas exitosamente.")                      
-
-                elif int(opcion) == 7:
-                    nuevo_punt_conf = input("Ingrese el nuevo puntaje de confianza del activo (1-10): ")
-                    while not validar_puntaje(nuevo_punt_conf):
-                        nuevo_punt_conf = input("Ingrese el nuevo puntaje de confianza del activo (1-10): ")
-                    
-                    activo_encontrado[6] = int(nuevo_punt_conf)
-                    print("Puntaje de confianza del activo modificado exitosamente.")
-
-                
-                menu_modificar()
-                opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
-
-                while not validar_opcion_modificar(opcion):
-                    opcion = input("Ingrese el número de la opción que desea modificar u 8 para salir: ")
-
             
-            print("Saliendo del activo...")
+        print("Saliendo del activo...")
 
         nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+        
+        activo_encontrado = busqueda_nombre(matriz, nombre)
 
+def mostrar_matriz(matriz):
+    """Muestra todos los activos de la matriz ordenados por puntaje de confianza descendente."""
 
-def mostrar_matriz (matriz):
+    ordenar_matriz(matriz)
 
-    matriz = ordenar_matriz(matriz)
+    print("\n" + "=" * 110)
 
-    print("\n" + "=" * 105)
-
-    print(f"{'NOMBRE':<25} {'TICKER':<8} {'VALOR USD':>12} {'VOLUMEN':>18} {'METODOLOGÍA':>15} {'UNIDADES':>12} {'PUNTAJE':>8}")
+    print(f"{'NOMBRE':<25} {'TICKER':<8} {'VALOR USD':>12} {'VOLUMEN':>18} {'METODOLOGÍA':>15} {'UNIDADES':>14} {'PUNTAJE':>8}")
     
-    print("=" * 105)
+    print("=" * 110)
 
     for activo in matriz:
-        print(f"{activo[0]:<25} {activo[1]:<8} {float(activo[2]):>12.2f} {int(activo[3]):>18,} {activo[4]:>15} {float(activo[5]):>12,} {int(activo[6]):>8}")
+        print(f"{activo[0]:<25} {activo[1]:<8} {float(activo[2]):>12.2f} {int(activo[3]):>18,} {activo[4]:>15} {float(activo[5]):>14,.2f} {int(activo[6]):>8}")
     
-    print("=" * 105)
+    print("=" * 110)
 
     salida = input("\nPresione Enter para volver al menú principal...")
 
@@ -210,12 +204,13 @@ def mostrar_matriz (matriz):
 #=======================================================
 
 def busqueda_ticker(matriz, ticker):
+    """Busca activos por ticker en la matriz. Retorna la lista de coincidencias o False si no hay ninguna."""
 
     tickers_encontrados = []
 
     for i in matriz:
 
-        if i[1].upper() == ticker.upper() and i[5] == 0:
+        if i[1].upper() == ticker.upper() and float(i[5]) == 0:
 
             tickers_encontrados.append(i)
 
@@ -228,10 +223,11 @@ def busqueda_ticker(matriz, ticker):
         return tickers_encontrados
     
     elif len(tickers_encontrados) == 0:
-        print("Activo no encontrado o tiene unidades en tesoreria.")
+        print("Activo no encontrado. Asegúrese que tenga 0 unidades en tesorería.")
         return False
 
 def busqueda_nombre(matriz, nombre):
+    """Busca activos por nombre en la matriz. Retorna la lista de coincidencias o False si no hay ninguna."""
 
     nombres_encontrados = []
 
@@ -242,7 +238,7 @@ def busqueda_nombre(matriz, nombre):
             nombres_encontrados.append(i)
 
     if len(nombres_encontrados) == 1:
-        print(f"Activo encontrado: {i[0]}")
+        print(f"Activo encontrado: {nombres_encontrados[0][0]}")
         return nombres_encontrados
     elif len(nombres_encontrados) > 1:
         print("Se encontraron múltiples activos con el mismo nombre.")
@@ -252,27 +248,31 @@ def busqueda_nombre(matriz, nombre):
         return False
 
 def validar_nombre(nombre):
-    if nombre == ''  or not nombre.isalpha():
+    """Valida que el nombre no esté vacío y contenga solo caracteres alfabéticos. Retorna True si es válido."""
+    if nombre == '' or nombre.isnumeric():
         print('El nombre del activo no puede estar vacío ni contener caracteres no alfabéticos. Intente nuevamente.')
         return False
     else:
         return True
 
 def validar_ticker(ticker):
-    if ticker == '' or not ticker.isalpha() or len(ticker) < 3 or len(ticker) > 5:
-        print('El ticker debe tener entre 3 y 5 caracteres, no puede estar vacío, y solo puede contener caracteres alfabéticos. Intente nuevamente.')
+    """Valida que el ticker tenga entre 3 y 5 caracteres alfabéticos. Retorna True si es válido."""
+    if ticker == '' or not ticker.replace('.', '').isalpha() or ticker.count('.')>1 or len(ticker) < 3 or len(ticker) > 5 or ticker.upper() == 'FIN':
+        print('El ticker debe tener entre 3 y 5 caracteres, no puede estar vacío, y solo puede contener caracteres alfabéticos. No puede guardarse FIN. Intente nuevamente.')
         return False
     else:
         return True
 
 def validar_valor(valor_ref):
-    if not valor_ref.replace(".", "").isnumeric() or valor_ref.count(".") > 1 or valor_ref == '' or float(valor_ref) <= 0:
+    """Valida que el valor de referencia sea un número decimal positivo. Retorna True si es válido."""
+    if valor_ref == '' or valor_ref.count(".") > 1 or not valor_ref.replace(".", "").isnumeric() or float(valor_ref) <= 0:
         print('El valor de referencia debe ser un número positivo, y no puede estar vacío. Intente nuevamente.')
         return False
     else:
         return True
 
 def validar_volumen(volumen):
+    """Valida que el volumen de actividad sea un entero no negativo. Retorna True si es válido."""
     if volumen == '' or not volumen.isnumeric() or int(volumen) < 0 :
         print('El volumen de actividad debe ser un número positivo, y no puede estar vacío. Intente nuevamente.')
         return False
@@ -280,20 +280,23 @@ def validar_volumen(volumen):
         return True
 
 def validar_metodologia(metodologia):
-    if metodologia == '' or not metodologia.isnumeric() or int(metodologia) > 4 or int(metodologia) < 1:
+    """Valida que la metodología sea un número entre 1 y 4. Retorna True si es válido."""
+    if  metodologia == '' or not metodologia.isnumeric() or int(metodologia) > 4 or int(metodologia) < 1:
         print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
         return False
     else:
         return True
     
 def validar_unidades(unidades):
-    if unidades == '' or unidades.count(".") <= 1 and not unidades.replace(".", "").isnumeric() or float(unidades) < 0 :
+    """Valida que las unidades en tesorería sean un número no negativo. Retorna True si es válido."""
+    if unidades == '' or unidades.count(".") > 1 or not unidades.replace(".", "").isnumeric() or float(unidades) < 0 :
         print('Las unidades totales en tesorería deben ser un número positivo, y no pueden estar vacías. Intente nuevamente.')
         return False
     else:
         return True
     
 def validar_puntaje(puntaje):
+    """Valida que el puntaje de confianza sea un entero entre 1 y 10. Retorna True si es válido."""
     if puntaje == '' or not puntaje.isnumeric() or int(puntaje) < 1 or int(puntaje) > 10 :
         print('El puntaje de confianza debe ser un número entre 1 y 10, y no puede estar vacío. Intente nuevamente.')
         return False
@@ -301,6 +304,7 @@ def validar_puntaje(puntaje):
         return True
 
 def validar_repetidos(nombre, ticker, metodologia, matriz):
+    """Verifica que no exista un activo con igual nombre o ticker y misma metodología. Retorna True si no hay duplicado."""
     metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
 
     for i in matriz:
@@ -312,21 +316,26 @@ def validar_repetidos(nombre, ticker, metodologia, matriz):
             return False
     else:
         return True
+    
+def validar_opcion_repetidos(opcion, activos):
+    '''Valida la opción elegida en el menú para seleccionar el activo que desea el usuario en caso de que hayan varios con el mismo nombre o ticker'''
 
-def validar_opcion_eliminar(opcion, activos):
-    if opcion == '' or not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 0:
+    if opcion == '' or not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) < 1:
         print("Opción no válida. Intente nuevamente.")
         return False
     else: return True
 
 def validar_opcion_modificar(opcion):
+    '''Valida la opción elegida en el menú de modificar activos'''
+
     if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 8:
         print("Opción inválida. Intente nuevamente.")
-        menu_modificar()
         return False
-    else: return True
+    else: 
+        return True
 
 def menu_modificar():
+    """Muestra el submenú de opciones para modificar los campos de un activo."""
 
     print("1. Cambiar nombre del activo")
     print("2. Cambiar ticker")
@@ -338,6 +347,7 @@ def menu_modificar():
     print("8. Salir")
 
 def ordenar_matriz(matriz):
+    """Ordena la matriz mediante selección por puntaje de confianza descendente; en caso de empate, ordena por nombre alfabéticamente."""
 
     for i in range(len(matriz)-1):
         indice_max = i
@@ -350,16 +360,15 @@ def ordenar_matriz(matriz):
                 nombre_activo_max = matriz[indice_max][0].upper()
                 if nombre_activo < nombre_activo_max:
                     indice_max = j
-            
-        matriz[i], matriz[indice_max] = matriz[indice_max], matriz[i]
 
-    return matriz
+        matriz[i], matriz[indice_max] = matriz[indice_max], matriz[i]
 
 #=======================================================
 #                        MENU
 #=======================================================
 
 def menu():
+    """Muestra el menú principal y retorna la opción seleccionada por el usuario."""
 
     print('='*50)
     print(' '*2 + 'SISTEMA DE GESTION: CRYPTO-ANALYTICS LAB')
@@ -371,60 +380,59 @@ def menu():
     print("8. Salir")
     print('='*50)
 
-    opciones_validas = ['1', '2', '3', '4', '8']
-
     opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
 
-    if opcion in opciones_validas:
-        while not opcion.isnumeric() or int(opcion) < 1 or (int(opcion) > 4 and int(opcion) != 8):
-            print("Opción inválida. Intente nuevamente.\n")
-            opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
-    else:
-        print("Opción inválida. Intente nuevamente.\n")
-        opcion = input('Ingrese el numero de la opcion que desea ejecutar: ')
-        while not opcion.isnumeric() or int(opcion) < 1 or (int(opcion) > 4 and int(opcion) != 8):
-            print("Opción inválida. Intente nuevamente.\n")
-            opcion = input('Ingrese el numero de la opcion que desea ejecutar: ') 
-
-    return int(opcion)
+    return opcion
 
 def verificacion_menu (opcion, matriz):
+    """Valida la opcion elegida por el usuario y ejecuta la operación correspondiente."""
 
-    if opcion == 1:
+    opciones_validas = ['1', '2', '3', '4', '8']
+
+    while opcion not in opciones_validas:
+
+        print("Opción inválida. Intente nuevamente.\n")
+        opcion = menu()
+
+    if int(opcion) == 1:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
         while not validar_nombre(nombre) and nombre.lower() != 'fin':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
         if nombre.lower() != 'fin':
             alta_activo(matriz, nombre)
 
-    elif opcion == 2:
+    elif int(opcion) == 2:
         ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
-        while not validar_ticker(ticker):
+        while not validar_ticker(ticker) and ticker.upper() != 'FIN':
             ticker = input('Ingrese el ticker del activo que desea eliminar: ').upper()
         
         eliminar(matriz, ticker)
 
-    elif opcion == 3:
+    elif int(opcion) == 3:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
         while not validar_nombre(nombre) and nombre.lower() != 'fin':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
         if nombre.lower() != 'fin':
             modificar_activo(matriz, nombre)
 
-    elif opcion == 4:
+    elif int(opcion) == 4:
         mostrar_matriz(matriz)
 
-    elif opcion == 8:
+    elif int(opcion) == 8:
         print("Saliendo del programa...")
 
-    else:
-        print("Opcion inválida. Por favor, ingrese una opcion del menu.")
+def menu_repetidos(activos_repetidos):
+    '''Menú mostrado cuando hay múltiples activos que cumplen los requisitos de búsqueda'''
 
+    print(f"Activos encontrados: ")
+    for i in range(len(activos_repetidos)):
+        print(f"{i+1}.")
+        print(f"Nombre: \n", activos_repetidos[i][0])
+        print(f"Metodologia: \n", activos_repetidos[i][4])
 
-
-#=======================================================
-#              FUNCION MODIFICAR ORIGINAL
-#=======================================================
+#=================================================================================
+#             FUNCION MODIFICAR ORIGINAL (solicitado por el docente)
+#=================================================================================
 
 #def modificar(lista):
 
