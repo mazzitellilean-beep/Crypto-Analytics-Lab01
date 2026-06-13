@@ -142,9 +142,7 @@ def modificar_activo(matriz, nombre):
                     print("Volumen de actividad del activo modificado exitosamente.")
 
                 elif int(opcion) == 5:
-                    metodos_validos = ['Scalping', 'DayTrading', 'SwingTrading', 'HODL']  
-                    print(metodos_validos)
-                    nueva_met_op = predecir_metodologia
+                    nueva_met_op = predecir_metodologia()
                     activo_encontrado[4] = nueva_met_op
                     print("Metodología de operación del activo modificada exitosamente.")                   
 
@@ -198,39 +196,39 @@ def predecir_metodologia():
     """Solicita al usuario una metodología (texto, mín. 3 letras) y la valida contra metodos_validos,
     permitiendo coincidencias parciales con confirmación. Retorna el nombre completo y válido de la metodología."""
 
-    metodos_validos = ['Scalping', 'DayTrading', 'SwingTrading', 'HODL']      
+    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']      
     print(metodos_validos)
-    met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+    met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
 
     while not validar_metodologia(met_op):
         print(metodos_validos)
-        met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+        met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
     
     while validar_metodologia(met_op):
  
         coincidencias_parciales = []
         
         for i in metodos_validos:
-            if i.lower() == met_op.lower():
+            if i.replace(' ', '').lower() == met_op.replace(' ', '').lower():
                 return i
-            elif met_op.lower() in i.lower():
+            elif met_op.replace(' ', '').lower() in i.replace(' ', '').lower():
                 coincidencias_parciales.append(i)
      
         if len(coincidencias_parciales) == 1:
-            confirmacion = input(f'¿Quiso decir {coincidencias_parciales}? (s/n): ').lower()
+            confirmacion = input(f'¿Quiso decir {coincidencias_parciales[0]}? (s/n): ').lower()
             if confirmacion == 's':
                 return coincidencias_parciales[0]
-            else: met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+            else: met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
         elif len(coincidencias_parciales) > 1:
             print(f'Coincide con varias opciones: {coincidencias_parciales}')
             print('Sea mas especifico. Intente nuevamente.')
-            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
         else:
             print('No se encontraron coincidencias de metodologias. Intente nuevamente.')
-            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
         
         while not validar_metodologia(met_op):
-            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
 
 
         
@@ -287,7 +285,7 @@ def busqueda_nombre(matriz, nombre):
 
 def validar_nombre(nombre):
     """Valida que el nombre no esté vacío y contenga solo caracteres alfabéticos. Retorna True si es válido."""
-    if nombre == '' or not nombre.isalpha():
+    if nombre == '' or nombre.replace(' ', '').isnumeric():
         print('El nombre del activo no puede estar vacío ni contener caracteres no alfabéticos. Intente nuevamente.')
         return False
     else:
