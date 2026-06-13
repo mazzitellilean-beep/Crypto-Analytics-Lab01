@@ -1,4 +1,3 @@
-
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -7,7 +6,7 @@ def eliminar(matriz, ticker):
 
     """Elimina un activo de la matriz según su ticker. Repite hasta que el usuario ingrese 'fin'."""
 
-    while validar_ticker(ticker) and ticker.lower() != 'fin':
+    while ticker.upper() != 'FIN':
 
         activos = busqueda_ticker(matriz, ticker)
 
@@ -27,7 +26,9 @@ def eliminar(matriz, ticker):
                 matriz.remove(activos[0])
                 print("Activo eliminado exitosamente")
 
-        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ')
+        ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ').upper()
+        while not validar_ticker(ticker) and ticker.upper() != 'FIN':
+            ticker = input('Ingrese el ticker del activo que desea eliminar o fin para finalizar: ').upper()
 
     print("\nVolviendo al menu principal...\n")
 
@@ -35,7 +36,7 @@ def alta_activo(matriz, nombre):
 
     """Solicita los datos de un nuevo activo y lo agrega a la matriz. Repite hasta que el usuario ingrese 'fin'."""
 
-    while validar_nombre(nombre) and nombre.lower() != 'fin':
+    while nombre.upper() != 'FIN':
 
         ticker = input('Ingrese el ticker del activo: ').upper()
 
@@ -75,17 +76,17 @@ def alta_activo(matriz, nombre):
             print('Datos del activo agregados correctamente.')
 
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
 
-    if nombre.lower() == 'fin':
+    if nombre.upper() == 'FIN':
         print("\nVolviendo al menu principal...\n")
     
 
 def modificar_activo(matriz, nombre):
     """Permite modificar los campos de un activo existente identificado por nombre. Repite hasta que el usuario ingrese 'fin'."""
 
-    while nombre.lower() != 'fin':
+    while nombre.upper() != 'FIN':
 
         activo_encontrado = busqueda_nombre(matriz, nombre)
 
@@ -125,7 +126,7 @@ def modificar_activo(matriz, nombre):
                 elif int(opcion) == 2:
                     nuevo_ticker = input("Ingrese el nuevo ticker del activo: ").upper()
                     while not validar_ticker(nuevo_ticker):
-                        nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
+                        nuevo_ticker = input("Ingrese el nuevo ticker del activo: ").upper()
 
                     activo_encontrado[1] = nuevo_ticker
                     print("Ticker del activo modificado exitosamente.")
@@ -182,7 +183,7 @@ def modificar_activo(matriz, nombre):
             print("Saliendo del activo...")
 
         nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
-        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
 
 def mostrar_matriz(matriz):
@@ -261,7 +262,7 @@ def validar_nombre(nombre):
 
 def validar_ticker(ticker):
     """Valida que el ticker tenga entre 3 y 5 caracteres alfabéticos. Retorna True si es válido."""
-    if ticker == '' or not ticker.isalpha() or len(ticker) < 3 or len(ticker) > 5 or ticker.upper() == 'FIN':
+    if ticker == '' or not ticker.replace('.', '').isalpha() or ticker.count('.') > 1 or len(ticker) < 3 or len(ticker) > 5 or ticker.upper() == 'FIN':
         print('El ticker debe tener entre 3 y 5 caracteres, no puede estar vacío, y solo puede contener caracteres alfabéticos. Intente nuevamente.')
         return False
     else:
@@ -400,9 +401,9 @@ def verificacion_menu (opcion, matriz):
 
     if int(opcion) == 1:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        if nombre.lower() != 'fin':
+        if nombre.upper() != 'FIN':
             alta_activo(matriz, nombre)
 
     elif int(opcion) == 2:
@@ -414,9 +415,9 @@ def verificacion_menu (opcion, matriz):
 
     elif int(opcion) == 3:
         nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        while not validar_nombre(nombre) and nombre.lower() != 'fin':
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input('Ingrese el nombre oficial del activo o fin para finalizar: ')
-        if nombre.lower() != 'fin':
+        if nombre.upper() != 'FIN':
             modificar_activo(matriz, nombre)
 
     elif int(opcion) == 4:
@@ -442,7 +443,7 @@ def menu_repetidos(activos_repetidos):
 
     #activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
 
-    #while activo_a_cambiar.lower() != 'fin':
+    #while activo_a_cambiar.upper() != 'FIN':
         
         #activo_encontrado = False
 
