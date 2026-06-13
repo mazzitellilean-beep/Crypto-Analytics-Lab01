@@ -1,13 +1,17 @@
-from mostrar_menu import menu
-from generacion_tabla import generacion_tabla
+import funciones
+from tabla_original import tabla_original
+
+def main():
     
-tabla_activos = generacion_tabla()
+    tabla_activos = tabla_original()
 
-opcion = menu()
+    opcion = funciones.menu()
 
-while opcion != 8: 
-    from validacion_opcion import verificacion_menu
-    verificacion_menu(opcion, tabla_activos)
-    opcion = menu()
+    while int(opcion) != 8: 
+        funciones.verificacion_menu(opcion, tabla_activos)
+        opcion = funciones.menu()
 
-print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
+    print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
+
+if __name__ == "__main__":
+    main() 
