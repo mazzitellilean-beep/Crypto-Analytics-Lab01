@@ -1,4 +1,3 @@
-
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -263,7 +262,7 @@ def validar_nombre(nombre):
 
 def validar_ticker(ticker):
     """Valida que el ticker tenga entre 3 y 5 caracteres alfabéticos. Retorna True si es válido."""
-    if ticker == '' or ticker.isnumeric() or len(ticker) < 3 or len(ticker) > 5 or ticker.upper() == 'FIN':
+    if ticker == '' or not ticker.replace('.', '').isalpha() or ticker.count('.') > 1 or len(ticker) < 3 or len(ticker) > 5 or ticker.upper() == 'FIN':
         print('El ticker debe tener entre 3 y 5 caracteres, no puede estar vacío, y solo puede contener caracteres alfabéticos. Intente nuevamente.')
         return False
     else:
@@ -397,7 +396,7 @@ def verificacion_menu (opcion, matriz):
 
     while opcion not in opciones_validas:
 
-        print("mOpción inválida. Intente nuevamente.\n")
+        print("Opción inválida. Intente nuevamente.\n")
         opcion = menu()
 
     if int(opcion) == 1:
