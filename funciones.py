@@ -52,15 +52,9 @@ def alta_activo(matriz, nombre):
 
         while not validar_volumen(vol_act):
             vol_act = input('Ingrese el volumen de actividad de las ultimas 24hs: ')
-                    
-        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-        metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
-        met_op = input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: ')
         
-        while not validar_metodologia(met_op):
-            print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-            met_op = input(f'Ingrese la metodologia de operacion asignada {metodos_validos}: ')
-                        
+        met_op = predecir_metodologia()
+                    
         unidades = input('Ingrese las unidades totales en tesoreria: ')
         while not validar_unidades(unidades):
             unidades = input('Ingrese las unidades totales en tesoreria: ')
@@ -71,7 +65,7 @@ def alta_activo(matriz, nombre):
         
         if validar_repetidos(nombre, ticker, met_op, matriz):
 
-            activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act),metodos_validos[int(met_op) - 1],float(unidades),int(punt_conf)]
+            activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act), met_op, float(unidades),int(punt_conf)]
             matriz.append(activo)
             print('Datos del activo agregados correctamente.')
 
@@ -148,15 +142,11 @@ def modificar_activo(matriz, nombre):
                     print("Volumen de actividad del activo modificado exitosamente.")
 
                 elif int(opcion) == 5:
-                    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
-                    print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                    nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
-                    while not validar_metodologia(nueva_met_op):
-                        print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                        nueva_met_op = input('Ingrese el numero de la nueva metodología de operación asignada: ')
-
-                    activo_encontrado[4] = metodos_validos[int(nueva_met_op) - 1]
-                    print("Metodología de operación del activo modificada exitosamente.")
+                    metodos_validos = ['Scalping', 'DayTrading', 'SwingTrading', 'HODL']  
+                    print(metodos_validos)
+                    nueva_met_op = predecir_metodologia
+                    activo_encontrado[4] = nueva_met_op
+                    print("Metodología de operación del activo modificada exitosamente.")                   
 
                 elif int(opcion) == 6:
                     nuevas_unidades = input("Ingrese las nuevas unidades en tesorería del activo: ")
@@ -203,6 +193,49 @@ def mostrar_matriz(matriz):
     print("=" * 110)
 
     salida = input("\nPresione Enter para volver al menú principal...")
+
+def predecir_metodologia():
+    """Solicita al usuario una metodología (texto, mín. 3 letras) y la valida contra metodos_validos,
+    permitiendo coincidencias parciales con confirmación. Retorna el nombre completo y válido de la metodología."""
+
+    metodos_validos = ['Scalping', 'DayTrading', 'SwingTrading', 'HODL']      
+    print(metodos_validos)
+    met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+
+    while not validar_metodologia(met_op):
+        print(metodos_validos)
+        met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+    
+    while validar_metodologia(met_op):
+ 
+        coincidencias_parciales = []
+        
+        for i in metodos_validos:
+            if i.lower() == met_op.lower():
+                return i
+            elif met_op.lower() in i.lower():
+                coincidencias_parciales.append(i)
+     
+        if len(coincidencias_parciales) == 1:
+            confirmacion = input(f'¿Quiso decir {coincidencias_parciales}? (s/n): ').lower()
+            if confirmacion == 's':
+                return coincidencias_parciales[0]
+            else: met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+        elif len(coincidencias_parciales) > 1:
+            print(f'Coincide con varias opciones: {coincidencias_parciales}')
+            print('Sea mas especifico. Intente nuevamente.')
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+        else:
+            print('No se encontraron coincidencias de metodologias. Intente nuevamente.')
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+        
+        while not validar_metodologia(met_op):
+            met_op = input('Ingrese la metodología de operación (min. 3 letras): ')
+
+
+        
+
+   
 
 #=======================================================
 #                FUNCIONES BACK
@@ -254,7 +287,7 @@ def busqueda_nombre(matriz, nombre):
 
 def validar_nombre(nombre):
     """Valida que el nombre no esté vacío y contenga solo caracteres alfabéticos. Retorna True si es válido."""
-    if nombre == '' or nombre.isnumeric():
+    if nombre == '' or not nombre.isalpha():
         print('El nombre del activo no puede estar vacío ni contener caracteres no alfabéticos. Intente nuevamente.')
         return False
     else:
@@ -286,8 +319,8 @@ def validar_volumen(volumen):
 
 def validar_metodologia(metodologia):
     """Valida que la metodología sea un número entre 1 y 4. Retorna True si es válido."""
-    if  metodologia == '' or not metodologia.isnumeric() or int(metodologia) > 4 or int(metodologia) < 1:
-        print('La metodología de operación debe ser un número entre 1 y 4. Intente nuevamente.')
+    if metodologia == '' or not metodologia.replace(' ', '').isalpha() or len(metodologia) < 3:
+        print('Error. Debe ingresar al menos 3 letras. Intente nuevamente.')
         return False
     else:
         return True
@@ -310,13 +343,13 @@ def validar_puntaje(puntaje):
 
 def validar_repetidos(nombre, ticker, metodologia, matriz):
     """Verifica que no exista un activo con igual nombre o ticker y misma metodología. Retorna True si no hay duplicado."""
-    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
+    metodos_validos = ['Scalping', 'DayTrading', 'SwingTrading', 'HODL']  
 
     for i in matriz:
-        if metodos_validos[int(metodologia) - 1] == i[4] and nombre.upper() == i[0].upper():
+        if metodologia == i[4] and nombre.upper() == i[0].upper():
             print('Activo ya existente en el sistema.')
             return False
-        elif metodos_validos[int(metodologia) - 1] == i[4] and ticker.upper() == i[1].upper():
+        elif metodologia == i[4] and ticker.upper() == i[1].upper():
             print('Activo ya existente en el sistema.')
             return False
     else:
