@@ -7,9 +7,10 @@ def main():
 
     opcion = funciones.menu()
 
-    while int(opcion) != 8: 
+    while opcion != '8': 
         funciones.verificacion_menu(opcion, tabla_activos)
-        opcion = funciones.menu()
+        if opcion != '8':
+            opcion = funciones.menu()
 
     print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
 
