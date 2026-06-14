@@ -35,7 +35,25 @@ def eliminar(matriz, ticker):
 
     print("\n\033[92mVolviendo al menu principal...\033[0m")
 
-def alta_activo(matriz, nombre):
+def eliminar_catalogo(matriz, ticker):
+
+    """Elimina un activo del catalogo según su ticker. Repite hasta que el usuario ingrese 'fin'."""
+
+    while ticker.upper() != 'FIN':
+
+        activos = busqueda_ticker_catalogo(matriz, ticker)
+
+        if activos != False:
+            matriz.remove(activos[0])
+            print("\033[92mActivo eliminado exitosamente\033[0m")
+
+        ticker = input('\033[93mIngrese el ticker del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
+        while not validar_ticker(ticker) and ticker.upper() != 'FIN':
+            ticker = input('\033[93mIngrese el ticker del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
+
+    print("\n\033[92mVolviendo al menu principal...\033[0m")
+
+def alta_activo(matriz, nombre, catalogo):
 
     """Solicita los datos de un nuevo activo y lo agrega a la matriz. Repite hasta que el usuario ingrese 'fin'."""
 
@@ -62,13 +80,14 @@ def alta_activo(matriz, nombre):
 
         while not validar_unidades(unidades):
             unidades = input('\033[93mIngrese las unidades totales en tesoreria:\033[0m ')
-                           
-        punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
-
-        while not validar_puntaje(punt_conf):
-            punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
         
-        if validar_repetidos(nombre, ticker, met_op, matriz):
+        if activo_en_catalago(nombre, catalogo):
+             for i in catalogo:
+                if i[0].upper() == nombre.upper():
+                    punt_conf = i[6]
+        else: print('\033[91mEl activo no se encuentra en el catalogo. Intente otra vez.\033[0m')
+                                  
+        if validar_repetidos(nombre, ticker, met_op, matriz) and activo_en_catalago(nombre, catalogo):
 
             activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act), met_op, float(unidades),int(punt_conf)]
             matriz.append(activo)
@@ -81,6 +100,46 @@ def alta_activo(matriz, nombre):
     if nombre.upper() == 'FIN':
         print("\n\033[92mVolviendo al menu principal...\033[0m \n")
     
+def alta_activo_catalogo(matriz, nombre):
+
+    """Registra un nuevo activo en el catalogo.
+    No permite activos con el mismo nombre.
+    Repite hasta que el usuario ingrese 'fin'."""
+
+    while nombre.upper() != 'FIN':
+
+        ticker = input('\033[93mIngrese el ticker del activo:\033[0m ').upper()
+
+        while not validar_ticker(ticker):
+            ticker = input('\033[93mIngrese el ticker del activo:\033[0m ').upper()
+
+        valor_ref = input('\033[93mIngrese el valor de referencia base (Ej: USD) del activo:\033[0m ')
+
+        while not validar_valor(valor_ref):
+            valor_ref = input('\033[93mIngrese el valor de referencia base (Ej: USD) del activo:\033[0m ')
+
+        vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
+
+        while not validar_volumen(vol_act):
+            vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
+                           
+        punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
+
+        while not validar_puntaje(punt_conf):
+            punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
+        
+        if validar_repetidos_catalogo(nombre, ticker, matriz):
+
+            activo = [nombre, ticker.upper(), float(valor_ref), int(vol_act), int(punt_conf)]
+            matriz.append(activo)
+            print('\033[92mDatos del activo agregados correctamente.\033[0m ')
+
+        nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m  ')
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
+
+    if nombre.upper() == 'FIN':
+        print("\n\033[92mVolviendo al menu principal...\033[0m \n")
 
 def modificar_activo(matriz, nombre):
     """Permite modificar los campos de un activo existente identificado por nombre. Repite hasta que el usuario ingrese 'fin'."""
@@ -179,6 +238,91 @@ def modificar_activo(matriz, nombre):
         while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input("\033[93mIngrese el nombre del activo que desea modificar o fin para finalizar:\033[0m ")
 
+def modificar_activo_catalogo(matriz, nombre):
+    """Permite modificar los campos de un activo existente identificado por nombre. Repite hasta que el usuario ingrese 'fin'."""
+
+    while nombre.upper() != 'FIN':
+
+        activo_encontrado = busqueda_nombre(matriz, nombre)
+
+        if activo_encontrado:
+
+            activo_encontrado = activo_encontrado[0]
+
+            menu_modificar_catalogo()
+            opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
+
+            while not validar_opcion_modificar(opcion):
+                menu_modificar_catalogo()
+                opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
+
+            while int(opcion) != 8:
+
+                if int(opcion) == 1:
+                    nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
+                    while not validar_nombre(nuevo_nombre):
+                        nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
+
+                    activo_encontrado[0] = nuevo_nombre
+                    print("\n\033[92mNombre del activo modificado exitosamente.\033[0m")
+
+                elif int(opcion) == 2:
+                    nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
+                    while not validar_ticker(nuevo_ticker):
+                        nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
+
+                    activo_encontrado[1] = nuevo_ticker
+                    print("\n\033[92mTicker del activo modificado exitosamente.\033[0m")
+
+                elif int(opcion) == 3:
+                    nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
+                    while not validar_valor(nuevo_valor_ref):
+                        nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
+
+                    activo_encontrado[2] = float(nuevo_valor_ref)
+                    print("\n\033[92mValor de referencia del activo modificado exitosamente.\033[0m")
+
+                elif int(opcion) == 4:
+                    nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
+                    while not validar_volumen(nuevo_vol_act):
+                        nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
+
+                    activo_encontrado[3] = int(nuevo_vol_act)
+                    print("\n\033[92mVolumen de actividad del activo modificado exitosamente.\033[0m")
+
+                elif int(opcion) == 5:
+                    nueva_met_op = ingreso_metodologia()
+                    activo_encontrado[4] = nueva_met_op
+                    print("\n\033[92mMetodología de operación del activo modificada exitosamente.\033[0m")                   
+
+                elif int(opcion) == 6:
+                    nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
+                    while not validar_unidades(nuevas_unidades):
+                        nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
+
+                    activo_encontrado[5] = float(nuevas_unidades)
+                    print("\n\033[92mUnidades en tesorería del activo modificadas exitosamente.\033[0m")
+
+                elif int(opcion) == 7:
+                    nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
+                    while not validar_puntaje(nuevo_punt_conf):
+                        nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
+
+                    activo_encontrado[6] = int(nuevo_punt_conf)
+                    print("\n\033[92mPuntaje de confianza del activo modificado exitosamente.\033[0m")
+
+                menu_modificar()
+                opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
+
+                while not validar_opcion_modificar(opcion):
+                    opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
+
+            print("\n\033[92mSaliendo del activo...\033[0m")
+
+        nombre = input("\033[93mIngrese el nombre del activo que desea modificar o fin para finalizar:\033[0m ")
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input("\033[93mIngrese el nombre del activo que desea modificar o fin para finalizar:\033[0m ")
+
 def mostrar_matriz(matriz):
     """Muestra todos los activos de la matriz ordenados por puntaje de confianza descendente."""
 
@@ -197,12 +341,32 @@ def mostrar_matriz(matriz):
 
     input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
 
+def mostrar_catalogo(matriz):
+    """Muestra todos los activos de la matriz ordenados por puntaje de confianza descendente."""
+
+    ordenar_matriz(matriz)
+
+    print("\n" + "=" * 110)
+
+    print(f"{'NOMBRE':<25} {'TICKER':<8} {'VALOR USD':>12} {'VOLUMEN':>18} {'PUNTAJE':>8}")
+    
+    print("=" * 110)
+
+    for activo in matriz:
+        print(f"{activo[0]:<25} {activo[1]:<8} {float(activo[2]):>12.2f} {int(activo[3]):>18,} {int(activo[4]):>8}")
+    
+    print("=" * 110)
+
+    input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
+
 def ingreso_metodologia():
     """Solicita al usuario una metodología (texto, mín. 3 letras) y la valida contra metodos_validos,
     permitiendo coincidencias parciales con confirmación. Retorna el nombre completo y válido de la metodología."""
 
-    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']      
+    metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']
+    
     menu_metodologia(metodos_validos)
+
     met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
 
     while not validar_metodologia(met_op):
@@ -214,25 +378,41 @@ def ingreso_metodologia():
         coincidencias_parciales = []
         
         for i in metodos_validos:
-            if i.replace(' ', '').lower() == met_op.replace(' ', '').lower():
+            if i.replace(' ', '').lower() == met_op.lower():
                 return i
-            elif met_op.replace(' ', '').lower() in i.replace(' ', '').lower():
+            elif met_op.lower() in i.replace(' ', '').lower():
                 coincidencias_parciales.append(i)
      
         if len(coincidencias_parciales) == 1:
             confirmacion = input(f'\033[93m¿Quiso decir {coincidencias_parciales[0]}? (s/n):\033[0m ').lower()
             if confirmacion == 's':
                 return coincidencias_parciales[0]
-            elif confirmacion == 'n': met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
-            else: 
-                print('\033[91mOpcion invalida. Intente nuevamente\033[0m')
+            
+            elif confirmacion == 'n': 
                 menu_metodologia(metodos_validos)
                 met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
+            
+            else: 
+                print('\033[91mOpcion inválida. Intente nuevamente\033[0m')
+                menu_metodologia(metodos_validos)
+                met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
+        
         elif len(coincidencias_parciales) > 1:
-            print(f'\033[91mCoincide con varias opciones: {coincidencias_parciales}\033[0m')
-            print('\033[91mSea mas especifico. Intente nuevamente.\033[0m')
-            menu_metodologia(metodos_validos)
-            met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
+            menu_metodologias_repetidas(coincidencias_parciales)
+            confirmacion = input("\033[93mIngrese el número de una de estas metodologías o 'n' si ninguna es la deseada: \033[0m ")
+            
+            if confirmacion.lower() != 'n':
+
+                while not validar_opcion_repetidos(confirmacion, coincidencias_parciales):
+                    confirmacion = input("\033[93mIngrese el número de una de estas metodologías o 'n' si ninguna es la deseada: \033[0m ")   
+
+            if confirmacion.lower() == 'n':
+                menu_metodologia(metodos_validos)
+                met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
+            
+            elif validar_opcion_repetidos(confirmacion, coincidencias_parciales):
+                return coincidencias_parciales[int(confirmacion)-1]
+
         else:
             print('\033[91mNo se encontraron coincidencias de metodologias. Intente nuevamente.\033[0m')
             menu_metodologia(metodos_validos)
@@ -290,6 +470,29 @@ def busqueda_ticker(matriz, ticker):
     for i in matriz:
 
         if i[1].upper() == ticker.upper() and float(i[5]) == 0:
+
+            tickers_encontrados.append(i)
+
+    if len(tickers_encontrados) == 1:
+        print(f"Activo encontrado: {tickers_encontrados[0][0]}")
+        return tickers_encontrados
+    
+    elif len(tickers_encontrados) > 1:
+        print("Se encontraron múltiples activos con el mismo ticker.")
+        return tickers_encontrados
+    
+    elif len(tickers_encontrados) == 0:
+        print("\033[91mActivo no encontrado. Asegúrese que tenga 0 unidades en tesorería.\033[0m")
+        return False
+
+def busqueda_ticker_catalogo(matriz, ticker):
+    """Busca activos por ticker en la matriz. Retorna la lista de coincidencias o False si no hay ninguna."""
+
+    tickers_encontrados = []
+
+    for i in matriz:
+
+        if i[1].upper() == ticker.upper():
 
             tickers_encontrados.append(i)
 
@@ -394,6 +597,19 @@ def validar_repetidos(nombre, ticker, metodologia, matriz):
             return False
     else:
         return True
+
+def validar_repetidos_catalogo(nombre, ticker, matriz):
+    """Verifica que no exista un activo con igual nombre o ticker y misma metodología. Retorna True si no hay duplicado."""
+
+    for i in matriz:
+        if nombre.upper() == i[0].upper():
+            print('\033[91mActivo con este nombre ya existente en el sistema.\033[0m')
+            return False
+        elif ticker.upper() == i[1].upper():
+            print('\033[91mActivo con este ticker ya existente en el sistema.\033[0m')
+            return False
+    else:
+        return True
     
 def validar_opcion_repetidos(opcion, activos):
     '''Valida la opción elegida en el menú para seleccionar el activo que desea el usuario en caso de que hayan varios con el mismo nombre o ticker'''
@@ -401,7 +617,8 @@ def validar_opcion_repetidos(opcion, activos):
     if opcion == '' or not opcion.isnumeric() or int(opcion) > len(activos) or int(opcion) <= 0:
         print("\033[91mOpción no válida. Intente nuevamente.\033[0m")
         return False
-    else: return True
+    else: 
+        return True
 
 def validar_opcion_modificar(opcion):
     '''Valida la opción elegida en el menú de modificar activos'''
@@ -412,6 +629,22 @@ def validar_opcion_modificar(opcion):
     else: 
         return True
 
+def validar_opcion_modificar_catalogo(opcion):
+    '''Valida la opción elegida en el menú de modificar activos'''
+
+    if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 6:
+        print("\033[91mOpción inválida. Intente nuevamente.\033[0m")
+        return False
+    else: 
+        return True
+
+def activo_en_catalago(nombre, catalogo):
+
+    for i in catalogo:
+        if i[0].upper() == nombre.upper():
+            return True
+        else: return False
+
 def menu_modificar():
     """Muestra el submenú de opciones para modificar los campos de un activo."""
 
@@ -421,6 +654,16 @@ def menu_modificar():
     print("\033[92m4. Cambiar volumen de actividad\033[0m")
     print("\033[92m5. Cambiar metodología de operación\033[0m")
     print("\033[92m6. Cambiar unidades en tesorería\033[0m")
+    print("\033[92m7. Cambiar puntaje de confianza (1-10)\033[0m")
+    print("\033[92m8. Salir\033[0m")
+
+def menu_modificar_catalogo():
+    """Muestra el submenú de opciones para modificar los campos de un activo en el catalogo."""
+
+    print("\033[92m1. Cambiar nombre del activo\033[0m")
+    print("\033[92m2. Cambiar ticker\033[0m")
+    print("\033[92m3. Cambiar valor de referencia\033[0m")
+    print("\033[92m4. Cambiar volumen de actividad\033[0m")
     print("\033[92m7. Cambiar puntaje de confianza (1-10)\033[0m")
     print("\033[92m8. Salir\033[0m")
 
@@ -446,6 +689,12 @@ def menu_metodologia(metodologias):
     for i in metodologias[0:3]:
         print(f"\033[93m{i}, \033[0m", end='')
     print(f"\033[93m{metodologias[3]}\033[0m")
+
+def menu_metodologias_repetidas(coincidencias):
+    print('\033[91mCoincide con varias opciones:\033[0m')
+    for i in range(len(coincidencias)):
+        print(f"\033[93m{i+1}. {coincidencias[i]} \033[0m", end='')
+    print()
 
 #=======================================================
 #                        MENU
