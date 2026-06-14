@@ -1,3 +1,4 @@
+
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -251,9 +252,15 @@ def volumen_superior_al_promedio(matriz):
     print(f"{'NOMBRE':<25} {'VOLUMEN':>18} {'DIFERENCIA':>25}")
     print("=" * 80)
 
+    superiores_promedio = False
+ 
     for i in range(len(matriz)):
         if matriz[i][3] > promedio:
             print(f"{matriz[i][0]:<25} {float(matriz[i][3]):>18,.2f} {float(matriz[i][3] - promedio):>25,.2f}")
+            superiores_promedio = True
+    
+    if not superiores_promedio:
+        print(f'\033[91mNo hay activos cuyo volumen sea superior al promedio\033[0m')
     
     print("=" * 80)
 
