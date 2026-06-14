@@ -202,11 +202,11 @@ def ingreso_metodologia():
     permitiendo coincidencias parciales con confirmación. Retorna el nombre completo y válido de la metodología."""
 
     metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL']      
-    print(metodos_validos)
+    menu_metodologia(metodos_validos)
     met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
 
     while not validar_metodologia(met_op):
-        print(metodos_validos)
+        menu_metodologia(metodos_validos)
         met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
     
     while validar_metodologia(met_op):
@@ -226,16 +226,20 @@ def ingreso_metodologia():
             elif confirmacion == 'n': met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
             else: 
                 print('\033[91mOpcion invalida. Intente nuevamente\033[0m')
+                menu_metodologia(metodos_validos)
                 met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
         elif len(coincidencias_parciales) > 1:
             print(f'\033[91mCoincide con varias opciones: {coincidencias_parciales}\033[0m')
             print('\033[91mSea mas especifico. Intente nuevamente.\033[0m')
+            menu_metodologia(metodos_validos)
             met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
         else:
             print('\033[91mNo se encontraron coincidencias de metodologias. Intente nuevamente.\033[0m')
+            menu_metodologia(metodos_validos)
             met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
         
         while not validar_metodologia(met_op):
+            menu_metodologia(metodos_validos)
             met_op = input('\033[93mIngrese la metodología de operación (min. 3 letras):\033[0m ').replace(' ', '').lower()
 
 def volumen_superior_al_promedio(matriz):
@@ -436,6 +440,12 @@ def ordenar_matriz(matriz):
                     indice_max = j
 
         matriz[i], matriz[indice_max] = matriz[indice_max], matriz[i]
+
+def menu_metodologia(metodologias):
+    print("\033[93mMetodologías disponibles:\033[0m")
+    for i in metodologias[0:3]:
+        print(f"\033[93m{i}, \033[0m", end='')
+    print(f"\033[93m{metodologias[3]}\033[0m")
 
 #=======================================================
 #                        MENU
