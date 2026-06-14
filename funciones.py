@@ -56,10 +56,12 @@ def alta_activo(matriz, nombre):
         met_op = predecir_metodologia()
                     
         unidades = input('Ingrese las unidades totales en tesoreria: ')
+
         while not validar_unidades(unidades):
             unidades = input('Ingrese las unidades totales en tesoreria: ')
                            
         punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
+
         while not validar_puntaje(punt_conf):
             punt_conf = input('Ingrese el puntaje de confianza del 1 al 10: ')
         
@@ -233,10 +235,29 @@ def predecir_metodologia():
         while not validar_metodologia(met_op):
             met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
 
+def volumen_superior_al_promedio(matriz):
 
-        
+    """Calcula el promedio de volumen de todos los activos y muestra los que superan el promedio."""
+    volumen = 0
 
-   
+    for i in range(len(matriz)):
+        volumen += matriz[i][3]
+
+    promedio = volumen / len(matriz)
+
+    print(f"\nEl promedio de volumen es: {promedio}")
+    
+    print("\n" + "=" * 80)
+    print(f"{'NOMBRE':<25} {'VOLUMEN':>18} {'DIFERENCIA':>25}")
+    print("=" * 80)
+
+    for i in range(len(matriz)):
+        if matriz[i][3] > promedio:
+            print(f"{matriz[i][0]:<25} {float(matriz[i][3]):>18,.2f} {float(matriz[i][3] - promedio):>25,.2f}")
+    
+    print("=" * 80)
+
+    input("\nPresione Enter para volver al menú principal...")      
 
 #=======================================================
 #                FUNCIONES BACK
@@ -416,6 +437,7 @@ def menu():
     print("2. Eliminar activo del sistema (Baja)")
     print("3. Modificar valoracion o puntaje (Modificacion)")
     print("4. Informe General - Visualizacion de los datos")
+    print("5. Informe Activos con Volumen superior al promedio")
     print("8. Salir")
     print('='*50)
 
@@ -426,7 +448,7 @@ def menu():
 def verificacion_menu (opcion, matriz):
     """Valida la opcion elegida por el usuario y ejecuta la operación correspondiente."""
 
-    opciones_validas = ['1', '2', '3', '4', '8']
+    opciones_validas = ['1', '2', '3', '4', '5', '8']
 
     while opcion not in opciones_validas:
 
@@ -456,6 +478,9 @@ def verificacion_menu (opcion, matriz):
 
     elif int(opcion) == 4:
         mostrar_matriz(matriz)
+    
+    elif int(opcion) == 5:
+        volumen_superior_al_promedio(matriz)
 
     elif int(opcion) == 8:
         print("Saliendo del programa...")
