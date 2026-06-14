@@ -1,4 +1,5 @@
 
+
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -193,7 +194,7 @@ def mostrar_matriz(matriz):
     
     print("=" * 110)
 
-    salida = input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
+    input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
 
 def predecir_metodologia():
     """Solicita al usuario una metodología (texto, mín. 3 letras) y la valida contra metodos_validos,
