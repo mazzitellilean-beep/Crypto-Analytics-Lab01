@@ -1,5 +1,6 @@
 
 
+
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -55,7 +56,7 @@ def alta_activo(matriz, nombre):
         while not validar_volumen(vol_act):
             vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
         
-        met_op = predecir_metodologia()
+        met_op = ingreso_metodologia()
                     
         unidades = input('\033[93mIngrese las unidades totales en tesoreria:\033[0m ')
 
@@ -146,7 +147,7 @@ def modificar_activo(matriz, nombre):
                     print("\n\033[92mVolumen de actividad del activo modificado exitosamente.\033[0m")
 
                 elif int(opcion) == 5:
-                    nueva_met_op = predecir_metodologia()
+                    nueva_met_op = ingreso_metodologia()
                     activo_encontrado[4] = nueva_met_op
                     print("\n\033[92mMetodología de operación del activo modificada exitosamente.\033[0m")                   
 
@@ -196,7 +197,7 @@ def mostrar_matriz(matriz):
 
     input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
 
-def predecir_metodologia():
+def ingreso_metodologia():
     """Solicita al usuario una metodología (texto, mín. 3 letras) y la valida contra metodos_validos,
     permitiendo coincidencias parciales con confirmación. Retorna el nombre completo y válido de la metodología."""
 
@@ -240,6 +241,12 @@ def predecir_metodologia():
 def volumen_superior_al_promedio(matriz):
 
     """Calcula el promedio de volumen de todos los activos y muestra los que superan el promedio."""
+
+    if not matriz:
+        print('\033[91mNo hay activos registrados en el sistema.\033[0m')
+        input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
+        return None
+
     volumen = 0
 
     for i in range(len(matriz)):
