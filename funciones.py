@@ -218,7 +218,10 @@ def predecir_metodologia():
             confirmacion = input(f'¿Quiso decir {coincidencias_parciales[0]}? (s/n): ').lower()
             if confirmacion == 's':
                 return coincidencias_parciales[0]
-            else: met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
+            elif confirmacion == 'n': met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
+            else: 
+                print('Opcion invalida. Intente nuevamente')
+                met_op = input('Ingrese la metodología de operación (min. 3 letras): ').replace(' ', '').lower()
         elif len(coincidencias_parciales) > 1:
             print(f'Coincide con varias opciones: {coincidencias_parciales}')
             print('Sea mas especifico. Intente nuevamente.')
