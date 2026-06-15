@@ -1,18 +1,18 @@
 import funciones
-from tabla_original import tabla_original
+import tablas
 
 def main():
     
-    tabla_activos = tabla_original()
+    catalogo = tablas.tabla_catalogo()
+    matriz = tablas.tabla_cartera()
 
-    opcion = funciones.menu()
+    opcion = funciones.menu_principal()
 
-    while opcion != '8': 
-        funciones.verificacion_menu(opcion, tabla_activos)
-        if opcion != '8':
-            opcion = funciones.menu()
+    while opcion != '8':
+        funciones.verificacion_menu_principal(opcion, catalogo, matriz)
+        opcion = funciones.menu_principal()   # siempre vuelve a pedir, el '8' corta el while
 
-    print("Gracias por utilizar el sistema de gestion. Finalizando programa...")
+    print("\033[92mGracias por utilizar el sistema de gestion. Finalizando programa...\033[0m")
 
 if __name__ == "__main__":
-    main() 
+    main()
