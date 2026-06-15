@@ -1,6 +1,4 @@
 
-
-
 #=======================================================
 #                FUNCIONES FRONT
 #=======================================================
@@ -35,21 +33,26 @@ def eliminar(matriz, ticker):
 
     print("\n\033[92mVolviendo al menu principal...\033[0m")
 
-def eliminar_catalogo(matriz, ticker):
+def eliminar_catalogo(catalogo, nombre, matriz):
+    """Elimina un activo del catálogo y sus ocurrencias en cartera. Repite hasta 'fin'."""
 
-    """Elimina un activo del catalogo según su ticker. Repite hasta que el usuario ingrese 'fin'."""
+    while nombre.upper() != 'FIN':
 
-    while ticker.upper() != 'FIN':
-
-        activos = busqueda_ticker_catalogo(matriz, ticker)
+        activos = busqueda_nombre(catalogo, nombre)
 
         if activos != False:
-            matriz.remove(activos[0])
+            catalogo.remove(activos[0])
+
+            activos_cartera = busqueda_nombre(matriz, nombre)
+            if activos_cartera != False:
+                for activo in activos_cartera:
+                    matriz.remove(activo)
+
             print("\033[92mActivo eliminado exitosamente\033[0m")
 
-        ticker = input('\033[93mIngrese el ticker del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
-        while not validar_ticker(ticker) and ticker.upper() != 'FIN':
-            ticker = input('\033[93mIngrese el ticker del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
+        nombre = input('\033[93mIngrese el nombre del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input('\033[93mIngrese el nombre del activo que desea eliminar o fin para finalizar:\033[0m ').upper()
 
     print("\n\033[92mVolviendo al menu principal...\033[0m")
 
@@ -63,17 +66,7 @@ def alta_activo(matriz, nombre, catalogo):
 
         while not validar_ticker(ticker):
             ticker = input('\033[93mIngrese el ticker del activo:\033[0m ').upper()
-
-        valor_ref = input('\033[93mIngrese el valor de referencia base (Ej: USD) del activo:\033[0m ')
-
-        while not validar_valor(valor_ref):
-            valor_ref = input('\033[93mIngrese el valor de referencia base (Ej: USD) del activo:\033[0m ')
-
-        vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
-
-        while not validar_volumen(vol_act):
-            vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
-        
+       
         met_op = ingreso_metodologia()
                     
         unidades = input('\033[93mIngrese las unidades totales en tesoreria:\033[0m ')
@@ -82,16 +75,20 @@ def alta_activo(matriz, nombre, catalogo):
             unidades = input('\033[93mIngrese las unidades totales en tesoreria:\033[0m ')
         
         if activo_en_catalago(nombre, catalogo):
-             for i in catalogo:
+            for i in catalogo:
                 if i[0].upper() == nombre.upper():
-                    punt_conf = i[6]
-        else: print('\033[91mEl activo no se encuentra en el catalogo. Intente otra vez.\033[0m')
+                    punt_conf = i[4]
+                    vol_act = i[2]
+                    valor_ref = i[1]
                                   
-        if validar_repetidos(nombre, ticker, met_op, matriz) and activo_en_catalago(nombre, catalogo):
+            if validar_repetidos(nombre, ticker, met_op, matriz) and activo_en_catalago(nombre, catalogo):
 
-            activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act), met_op, float(unidades),int(punt_conf)]
-            matriz.append(activo)
-            print('\033[92mDatos del activo agregados correctamente.\033[0m ')
+               activo = [nombre,ticker.upper(),float(valor_ref),int(vol_act), met_op, float(unidades),int(punt_conf)]
+               matriz.append(activo)
+               print('\033[92mDatos del activo agregados correctamente.\033[0m ')
+
+        else: 
+            print('\033[91mEl activo no se encuentra en el catalogo. Intente otra vez.\033[0m')
 
         nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m  ')
         while not validar_nombre(nombre) and nombre.upper() != 'FIN':
@@ -108,11 +105,6 @@ def alta_activo_catalogo(matriz, nombre):
 
     while nombre.upper() != 'FIN':
 
-        ticker = input('\033[93mIngrese el ticker del activo:\033[0m ').upper()
-
-        while not validar_ticker(ticker):
-            ticker = input('\033[93mIngrese el ticker del activo:\033[0m ').upper()
-
         valor_ref = input('\033[93mIngrese el valor de referencia base (Ej: USD) del activo:\033[0m ')
 
         while not validar_valor(valor_ref):
@@ -122,15 +114,17 @@ def alta_activo_catalogo(matriz, nombre):
 
         while not validar_volumen(vol_act):
             vol_act = input('\033[93mIngrese el volumen de actividad de las ultimas 24hs:\033[0m ')
-                           
+        
+        met_op = ingreso_metodologia()
+
         punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
 
         while not validar_puntaje(punt_conf):
             punt_conf = input('\033[93mIngrese el puntaje de confianza del 1 al 10:\033[0m ')
         
-        if validar_repetidos_catalogo(nombre, ticker, matriz):
+        if validar_repetidos_catalogo(nombre, matriz):
 
-            activo = [nombre, ticker.upper(), float(valor_ref), int(vol_act), int(punt_conf)]
+            activo = [nombre, float(valor_ref), int(vol_act), met_op, int(punt_conf)]
             matriz.append(activo)
             print('\033[92mDatos del activo agregados correctamente.\033[0m ')
 
@@ -174,14 +168,6 @@ def modificar_activo(matriz, nombre):
             while int(opcion) != 8:
 
                 if int(opcion) == 1:
-                    nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
-                    while not validar_nombre(nuevo_nombre):
-                        nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
-
-                    activo_encontrado[0] = nuevo_nombre
-                    print("\n\033[92mNombre del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 2:
                     nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
                     while not validar_ticker(nuevo_ticker):
                         nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
@@ -189,42 +175,18 @@ def modificar_activo(matriz, nombre):
                     activo_encontrado[1] = nuevo_ticker
                     print("\n\033[92mTicker del activo modificado exitosamente.\033[0m")
 
-                elif int(opcion) == 3:
-                    nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
-                    while not validar_valor(nuevo_valor_ref):
-                        nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
-
-                    activo_encontrado[2] = float(nuevo_valor_ref)
-                    print("\n\033[92mValor de referencia del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 4:
-                    nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
-                    while not validar_volumen(nuevo_vol_act):
-                        nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
-
-                    activo_encontrado[3] = int(nuevo_vol_act)
-                    print("\n\033[92mVolumen de actividad del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 5:
+                elif int(opcion) == 2:
                     nueva_met_op = ingreso_metodologia()
                     activo_encontrado[4] = nueva_met_op
                     print("\n\033[92mMetodología de operación del activo modificada exitosamente.\033[0m")                   
 
-                elif int(opcion) == 6:
+                elif int(opcion) == 3:
                     nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
-                    while not validar_unidades(nuevas_unidades):
+                    while not validar_unidades(nuevas_unidades, activo_encontrado):
                         nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
 
-                    activo_encontrado[5] = float(nuevas_unidades)
+                    activo_encontrado[5] += float(nuevas_unidades)
                     print("\n\033[92mUnidades en tesorería del activo modificadas exitosamente.\033[0m")
-
-                elif int(opcion) == 7:
-                    nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
-                    while not validar_puntaje(nuevo_punt_conf):
-                        nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
-
-                    activo_encontrado[6] = int(nuevo_punt_conf)
-                    print("\n\033[92mPuntaje de confianza del activo modificado exitosamente.\033[0m")
 
                 menu_modificar()
                 opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
@@ -238,12 +200,13 @@ def modificar_activo(matriz, nombre):
         while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input("\033[93mIngrese el nombre del activo que desea modificar o fin para finalizar:\033[0m ")
 
-def modificar_activo_catalogo(matriz, nombre):
+def modificar_activo_catalogo(matriz, nombre, cartera):
     """Permite modificar los campos de un activo existente identificado por nombre. Repite hasta que el usuario ingrese 'fin'."""
 
     while nombre.upper() != 'FIN':
 
         activo_encontrado = busqueda_nombre(matriz, nombre)
+        activo_cartera = busqueda_nombre(cartera, nombre)
 
         if activo_encontrado:
 
@@ -252,69 +215,61 @@ def modificar_activo_catalogo(matriz, nombre):
             menu_modificar_catalogo()
             opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
 
-            while not validar_opcion_modificar(opcion):
+            while not validar_opcion_modificar_catalogo(opcion):
                 menu_modificar_catalogo()
                 opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
 
-            while int(opcion) != 8:
+            while int(opcion) != 5:
 
                 if int(opcion) == 1:
-                    nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
-                    while not validar_nombre(nuevo_nombre):
-                        nuevo_nombre = input("\033[93mIngrese el nuevo nombre del activo:\033[0m ")
-
-                    activo_encontrado[0] = nuevo_nombre
-                    print("\n\033[92mNombre del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 2:
-                    nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
-                    while not validar_ticker(nuevo_ticker):
-                        nuevo_ticker = input("\033[93mIngrese el nuevo ticker del activo:\033[0m ").upper()
-
-                    activo_encontrado[1] = nuevo_ticker
-                    print("\n\033[92mTicker del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 3:
                     nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
                     while not validar_valor(nuevo_valor_ref):
                         nuevo_valor_ref = input("\033[93mIngrese el nuevo valor de referencia del activo:\033[0m ")
 
-                    activo_encontrado[2] = float(nuevo_valor_ref)
+                    activo_encontrado[1] = float(nuevo_valor_ref)
+
+                    if activo_cartera != False:
+                        for i in activo_cartera:       # ← si es False, TypeError
+                            if i[0] == activo_encontrado[0]:
+                                i[2] = float(nuevo_valor_ref)
+
                     print("\n\033[92mValor de referencia del activo modificado exitosamente.\033[0m")
 
-                elif int(opcion) == 4:
+                elif int(opcion) == 2:
                     nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
                     while not validar_volumen(nuevo_vol_act):
                         nuevo_vol_act = input("\033[93mIngrese el nuevo volumen de actividad del activo:\033[0m ")
 
-                    activo_encontrado[3] = int(nuevo_vol_act)
+                    activo_encontrado[2] = int(nuevo_vol_act)
+                    
+                    if activo_cartera != False:
+                        for i in activo_cartera:
+                           if i[0] == activo_encontrado[0]:
+                              i[3] = float(nuevo_vol_act)
                     print("\n\033[92mVolumen de actividad del activo modificado exitosamente.\033[0m")
-
-                elif int(opcion) == 5:
+                
+                elif int(opcion) == 3:
                     nueva_met_op = ingreso_metodologia()
-                    activo_encontrado[4] = nueva_met_op
-                    print("\n\033[92mMetodología de operación del activo modificada exitosamente.\033[0m")                   
+                    activo_encontrado[3] = nueva_met_op
+                    print("\n\033[92mMetodología de operación del activo modificada exitosamente.\033[0m")
 
-                elif int(opcion) == 6:
-                    nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
-                    while not validar_unidades(nuevas_unidades):
-                        nuevas_unidades = input("\033[93mIngrese las nuevas unidades en tesorería del activo:\033[0m ")
-
-                    activo_encontrado[5] = float(nuevas_unidades)
-                    print("\n\033[92mUnidades en tesorería del activo modificadas exitosamente.\033[0m")
-
-                elif int(opcion) == 7:
+                elif int(opcion) == 4:
                     nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
                     while not validar_puntaje(nuevo_punt_conf):
                         nuevo_punt_conf = input("\033[93mIngrese el nuevo puntaje de confianza del activo (1-10):\033[0m ")
 
-                    activo_encontrado[6] = int(nuevo_punt_conf)
+                    activo_encontrado[4] = int(nuevo_punt_conf)
+
+                    if activo_cartera != False:
+                        for i in activo_cartera:
+                           if i[0] == activo_encontrado[0]:
+                              i[6] = float(nuevo_punt_conf)
                     print("\n\033[92mPuntaje de confianza del activo modificado exitosamente.\033[0m")
 
-                menu_modificar()
+                menu_modificar_catalogo()
                 opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
 
-                while not validar_opcion_modificar(opcion):
+                while not validar_opcion_modificar_catalogo(opcion):
                     opcion = input("\033[93mIngrese el número de la opción que desea modificar u 8 para salir:\033[0m ")
 
             print("\n\033[92mSaliendo del activo...\033[0m")
@@ -344,16 +299,16 @@ def mostrar_matriz(matriz):
 def mostrar_catalogo(matriz):
     """Muestra todos los activos de la matriz ordenados por puntaje de confianza descendente."""
 
-    ordenar_matriz(matriz)
+    ordenar_catalogo(matriz)
 
     print("\n" + "=" * 110)
 
-    print(f"{'NOMBRE':<25} {'TICKER':<8} {'VALOR USD':>12} {'VOLUMEN':>18} {'PUNTAJE':>8}")
+    print(f"{'NOMBRE':<25} {'VALOR USD':>12} {'VOLUMEN':>18} {'METODOLOGÍA':>15} {'PUNTAJE':>8}")
     
     print("=" * 110)
 
     for activo in matriz:
-        print(f"{activo[0]:<25} {activo[1]:<8} {float(activo[2]):>12.2f} {int(activo[3]):>18,} {int(activo[4]):>8}")
+        print(f"{activo[0]:<25} {float(activo[1]):>12.2f} {int(activo[2]):>18,} {activo[3]:>15} {int(activo[4]):>8}")
     
     print("=" * 110)
 
@@ -458,6 +413,45 @@ def volumen_superior_al_promedio(matriz):
 
     input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")      
 
+def volumen_superior_al_promedio_catalogo(catalogo):
+    """Calcula el promedio de volumen del catálogo y muestra los activos que lo superan.
+    
+    Parámetros:
+        catalogo (list): lista de activos del catálogo [nombre, valor_ref, vol_act, met_op, punt_conf].
+    """
+
+    if not catalogo:
+        print('\033[91mNo hay activos registrados en el sistema.\033[0m')
+        input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
+        return None
+
+    volumen = 0
+
+    for i in range(len(catalogo)):
+        volumen += catalogo[i][2]
+
+    promedio = volumen / len(catalogo)
+
+    print(f"\nEl promedio de volumen es: {promedio:,.2f}")
+
+    print("\n" + "=" * 80)
+    print(f"{'NOMBRE':<25} {'VOLUMEN':>18} {'DIFERENCIA':>25}")
+    print("=" * 80)
+
+    superiores_promedio = False
+
+    for i in range(len(catalogo)):
+        if catalogo[i][2] > promedio:
+            print(f"{catalogo[i][0]:<25} {float(catalogo[i][2]):>18,.2f} {float(catalogo[i][2] - promedio):>25,.2f}")
+            superiores_promedio = True
+
+    if not superiores_promedio:
+        print('\033[91mNo hay activos cuyo volumen sea superior al promedio\033[0m')
+
+    print("=" * 80)
+
+    input("\n\033[93mPresione Enter para volver al menú principal...\033[0m")
+
 #=======================================================
 #                FUNCIONES BACK
 #=======================================================
@@ -470,29 +464,6 @@ def busqueda_ticker(matriz, ticker):
     for i in matriz:
 
         if i[1].upper() == ticker.upper() and float(i[5]) == 0:
-
-            tickers_encontrados.append(i)
-
-    if len(tickers_encontrados) == 1:
-        print(f"Activo encontrado: {tickers_encontrados[0][0]}")
-        return tickers_encontrados
-    
-    elif len(tickers_encontrados) > 1:
-        print("Se encontraron múltiples activos con el mismo ticker.")
-        return tickers_encontrados
-    
-    elif len(tickers_encontrados) == 0:
-        print("\033[91mActivo no encontrado. Asegúrese que tenga 0 unidades en tesorería.\033[0m")
-        return False
-
-def busqueda_ticker_catalogo(matriz, ticker):
-    """Busca activos por ticker en la matriz. Retorna la lista de coincidencias o False si no hay ninguna."""
-
-    tickers_encontrados = []
-
-    for i in matriz:
-
-        if i[1].upper() == ticker.upper():
 
             tickers_encontrados.append(i)
 
@@ -547,7 +518,7 @@ def validar_ticker(ticker):
 
 def validar_valor(valor_ref):
     """Valida que el valor de referencia sea un número decimal positivo. Retorna True si es válido."""
-    if valor_ref == '' or valor_ref.count(".") > 1 or not valor_ref.replace(".", "").isnumeric() or float(valor_ref) <= 0:
+    if valor_ref == '' or valor_ref.count(".") > 1 or not valor_ref.replace(".", "").isnumeric() or float(valor_ref) < 0:
         print('\033[91mEl valor de referencia debe ser un número positivo, y no puede estar vacío. Intente nuevamente.\033[0m')
         return False
     else:
@@ -569,10 +540,18 @@ def validar_metodologia(metodologia):
     else:
         return True
     
-def validar_unidades(unidades):
+def validar_unidades(unidades, cartera):
     """Valida que las unidades en tesorería sean un número no negativo. Retorna True si es válido."""
-    if unidades == '' or unidades.count(".") > 1 or not unidades.replace(".", "").isnumeric() or float(unidades) < 0 :
-        print('\033[91mLas unidades totales en tesorería deben ser un número positivo, y no pueden estar vacías. Intente nuevamente.\033[0m')
+    if unidades == '' or unidades.count(".") > 1 or not unidades.replace(".", "").replace("-", "").isnumeric() or float(unidades) < -(float(cartera[5])):
+        print('\033[91mLa compra/venta debe ser un número (puede tener .), si desea vender asegúrese de tener la cantidad deseada en tesorería\033[0m')
+        return False
+    else:
+        return True
+
+def validar_unidades_alta(unidades):
+    """Valida que las unidades iniciales al dar de alta sean un número positivo. Retorna True si es válido."""
+    if unidades == '' or unidades.count(".") > 1 or not unidades.replace(".", "").isnumeric() or float(unidades) < 0:
+        print('\033[91mLas unidades deben ser un número positivo. Intente nuevamente.\033[0m')
         return False
     else:
         return True
@@ -598,15 +577,12 @@ def validar_repetidos(nombre, ticker, metodologia, matriz):
     else:
         return True
 
-def validar_repetidos_catalogo(nombre, ticker, matriz):
+def validar_repetidos_catalogo(nombre, matriz):
     """Verifica que no exista un activo con igual nombre o ticker y misma metodología. Retorna True si no hay duplicado."""
 
     for i in matriz:
         if nombre.upper() == i[0].upper():
-            print('\033[91mActivo con este nombre ya existente en el sistema.\033[0m')
-            return False
-        elif ticker.upper() == i[1].upper():
-            print('\033[91mActivo con este ticker ya existente en el sistema.\033[0m')
+            print('\033[91mActivo ya existente en el sistema.\033[0m')
             return False
     else:
         return True
@@ -632,7 +608,7 @@ def validar_opcion_modificar(opcion):
 def validar_opcion_modificar_catalogo(opcion):
     '''Valida la opción elegida en el menú de modificar activos'''
 
-    if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 6:
+    if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 5:
         print("\033[91mOpción inválida. Intente nuevamente.\033[0m")
         return False
     else: 
@@ -643,29 +619,24 @@ def activo_en_catalago(nombre, catalogo):
     for i in catalogo:
         if i[0].upper() == nombre.upper():
             return True
-        else: return False
+    else: return False
 
 def menu_modificar():
     """Muestra el submenú de opciones para modificar los campos de un activo."""
 
-    print("\033[92m1. Cambiar nombre del activo\033[0m")
-    print("\033[92m2. Cambiar ticker\033[0m")
-    print("\033[92m3. Cambiar valor de referencia\033[0m")
-    print("\033[92m4. Cambiar volumen de actividad\033[0m")
-    print("\033[92m5. Cambiar metodología de operación\033[0m")
-    print("\033[92m6. Cambiar unidades en tesorería\033[0m")
-    print("\033[92m7. Cambiar puntaje de confianza (1-10)\033[0m")
+    print("\033[92m1. Cambiar ticker\033[0m")
+    print("\033[92m2. Cambiar metodología de operación\033[0m")
+    print("\033[92m3. Cambiar unidades en tesorería\033[0m")
     print("\033[92m8. Salir\033[0m")
 
 def menu_modificar_catalogo():
     """Muestra el submenú de opciones para modificar los campos de un activo en el catalogo."""
 
-    print("\033[92m1. Cambiar nombre del activo\033[0m")
-    print("\033[92m2. Cambiar ticker\033[0m")
-    print("\033[92m3. Cambiar valor de referencia\033[0m")
-    print("\033[92m4. Cambiar volumen de actividad\033[0m")
-    print("\033[92m7. Cambiar puntaje de confianza (1-10)\033[0m")
-    print("\033[92m8. Salir\033[0m")
+    print("\033[92m1. Cambiar valor de referencia\033[0m")
+    print("\033[92m2. Cambiar volumen de actividad\033[0m")
+    print("\033[92m3. Cambiar metodologia\033[0m")
+    print("\033[92m4. Cambiar puntaje de confianza (1-10)\033[0m")
+    print("\033[92m5. Salir\033[0m")
 
 def ordenar_matriz(matriz):
     """Ordena la matriz mediante selección por puntaje de confianza descendente; en caso de empate, ordena por nombre alfabéticamente."""
@@ -684,6 +655,18 @@ def ordenar_matriz(matriz):
 
         matriz[i], matriz[indice_max] = matriz[indice_max], matriz[i]
 
+def ordenar_catalogo(catalogo):
+    """Ordena el catálogo por puntaje de confianza descendente; empate por nombre alfabético."""
+    for i in range(len(catalogo) - 1):
+        indice_max = i
+        for j in range(i + 1, len(catalogo)):
+            if int(catalogo[j][4]) > int(catalogo[indice_max][4]):
+                indice_max = j
+            elif int(catalogo[j][4]) == int(catalogo[indice_max][4]):
+                if catalogo[j][0].upper() < catalogo[indice_max][0].upper():
+                    indice_max = j
+        catalogo[i], catalogo[indice_max] = catalogo[indice_max], catalogo[i]
+
 def menu_metodologia(metodologias):
     print("\033[93mMetodologías disponibles:\033[0m")
     for i in metodologias[0:3]:
@@ -696,12 +679,21 @@ def menu_metodologias_repetidas(coincidencias):
         print(f"\033[93m{i+1}. {coincidencias[i]} \033[0m", end='')
     print()
 
+def menu_repetidos(activos_repetidos):
+    '''Menú mostrado cuando hay múltiples activos que cumplen los requisitos de búsqueda'''
+
+    print(f"Activos encontrados: ")
+    for i in range(len(activos_repetidos)):
+        print(f"{i+1}.")
+        print(f"Nombre: \n", activos_repetidos[i][0])
+        print(f"Metodologia: \n", activos_repetidos[i][4])
+
 #=======================================================
 #                        MENU
 #=======================================================
 
-def menu():
-    """Muestra el menú principal y retorna la opción seleccionada por el usuario."""
+def menu_gestion_cartera():
+    """Muestra el menú de gestion de cartera y retorna la opción seleccionada por el usuario."""
 
     print('\033[92m' + '='*50 + '\033[0m')
     print('\033[92m' + ' '*2 + 'SISTEMA DE GESTION: CRYPTO-ANALYTICS LAB' + '\033[0m')
@@ -718,7 +710,41 @@ def menu():
 
     return opcion
 
-def verificacion_menu (opcion, matriz):
+def menu_gestion_catalogo():
+    """Muestra el menú de gestion de catalogo y retorna la opción seleccionada por el usuario."""
+
+    print('\033[92m' + '='*50 + '\033[0m')
+    print('\033[92m' + ' '*2 + 'SISTEMA DE GESTION: CRYPTO-ANALYTICS LAB' + '\033[0m')
+    print('\033[92m' + '='*50 + '\033[0m')
+    print("\033[92m1. Registrar nuevo activo (Alta)\033[0m")
+    print("\033[92m2. Eliminar activo del sistema (Baja)\033[0m")
+    print("\033[92m3. Modificar valoracion o puntaje (Modificacion)\033[0m")
+    print("\033[92m4. Informe General - Visualizacion de los datos\033[0m")
+    print("\033[92m5. Informe Activos con Volumen superior al promedio\033[0m")
+    print("\033[92m8. Salir\033[0m")
+    print('\033[92m' + '='*50 + '\033[0m')
+
+    opcion = input('\033[93mIngrese el numero de la opcion que desea ejecutar:\033[0m ')
+
+    return opcion
+
+def menu_principal():
+    """Muestra el menú de gestion de catalogo y retorna la opción seleccionada por el usuario."""
+
+    print('\033[92m' + '='*50 + '\033[0m')
+    print('\033[92m' + ' '*2 + 'SISTEMA DE GESTION: CRYPTO-ANALYTICS LAB' + '\033[0m')
+    print('\033[92m' + '='*50 + '\033[0m')
+    print("\033[92m1. Gestion catalogo\033[0m")
+    print("\033[92m2. Gestion cartera\033[0m")
+    print("\033[92m8. Salir\033[0m")
+    print('\033[92m' + '='*50 + '\033[0m')
+
+    opcion = input('\033[93mIngrese el numero de la opcion que desea ejecutar:\033[0m ')
+
+    return opcion
+
+
+def verificacion_menu_cartera (opcion, matriz, catalogo):
     """Valida la opcion elegida por el usuario y ejecuta la operación correspondiente."""
 
     opciones_validas = ['1', '2', '3', '4', '5', '8']
@@ -726,14 +752,14 @@ def verificacion_menu (opcion, matriz):
     while opcion not in opciones_validas:
 
         print("\033[91mOpción inválida. Intente nuevamente.\033[0m\n")
-        opcion = menu()
+        opcion = menu_gestion_cartera()
 
     if int(opcion) == 1:
         nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
         while not validar_nombre(nombre) and nombre.upper() != 'FIN':
             nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
         if nombre.upper() != 'FIN':
-            alta_activo(matriz, nombre)
+            alta_activo(matriz, nombre, catalogo)
 
     elif int(opcion) == 2:
         ticker = input('\033[93mIngrese el ticker del activo que desea eliminar:\033[0m ').upper()
@@ -758,111 +784,68 @@ def verificacion_menu (opcion, matriz):
     elif int(opcion) == 8:
         print("Saliendo del programa...")
 
-def menu_repetidos(activos_repetidos):
-    '''Menú mostrado cuando hay múltiples activos que cumplen los requisitos de búsqueda'''
+def verificacion_menu_catalogo (opcion, catalogo, matriz):
+    """Valida la opcion elegida por el usuario y ejecuta la operación correspondiente."""
 
-    print(f"Activos encontrados: ")
-    for i in range(len(activos_repetidos)):
-        print(f"{i+1}.")
-        print(f"Nombre: \n", activos_repetidos[i][0])
-        print(f"Metodologia: \n", activos_repetidos[i][4])
+    opciones_validas = ['1', '2', '3', '4', '5', '8']
 
-#=================================================================================
-#             FUNCION MODIFICAR ORIGINAL (solicitado por el docente)
-#=================================================================================
+    while opcion not in opciones_validas:
 
-#def modificar(lista):
+        print("\033[91mOpción inválida. Intente nuevamente.\033[0m\n")
+        opcion = menu_gestion_catalogo()
 
-    #activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+    if int(opcion) == 1:
+        nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
+        if nombre.upper() != 'FIN':
+            alta_activo_catalogo(catalogo, nombre)
 
-    #while activo_a_cambiar.upper() != 'FIN':
+    elif int(opcion) == 2:
+        nombre = input('\033[93mIngrese el nombre del activo que desea eliminar:\033[0m ').upper()
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input('\033[93mIngrese el nombre del activo que desea eliminar:\033[0m ').upper()
         
-        #activo_encontrado = False
+        eliminar_catalogo(catalogo, nombre, matriz)
 
-        #for i in lista:
-            #if i[0].upper() == activo_a_cambiar.upper():
-                #activo_encontrado = True
-                #print(f"Activo encontrado: {i}")
-                #print("1. Cambiar nombre del activo")
-                #print("2. Cambiar ticker")
-                #print("3. Cambiar valor de referencia")
-                #print("4. Cambiar volumen de actividad")
-                #print("5. Cambiar metodología de operación")
-                #print("6. Cambiar unidades en tesorería")
-                #print("7. Cambiar puntaje de confianza (1-10)")
-                #print("8. Salir")
+    elif int(opcion) == 3:
+        nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
+        while not validar_nombre(nombre) and nombre.upper() != 'FIN':
+            nombre = input('\033[93mIngrese el nombre oficial del activo o fin para finalizar:\033[0m ')
+        if nombre.upper() != 'FIN':
+            modificar_activo_catalogo(catalogo, nombre, matriz)
 
-                #opcion_modificar = int(input("Ingrese el número de la opción que desea modificar: "))
-
-                #if opcion_modificar < 1 or opcion_modificar > 8:
-                    #print("Opción no válida. Intente nuevamente.")
-                    #continue
-
-                #while opcion_modificar != 8:
-                    #if opcion_modificar == 1:
-                        #nuevo_nombre = input("Ingrese el nuevo nombre del activo: ")
-                        #if nuevo_nombre == '':
-                            #print('Error: El nombre no puede estar vacio. No se realizaron modificaciones')
-                        #else:
-                            #i[0] = nuevo_nombre
-                    #elif opcion_modificar == 2:
-                        #nuevo_ticker = input("Ingrese el nuevo ticker del activo: ")
-                        #if nuevo_ticker == '' or len(nuevo_ticker) < 3:
-                            #print('Error: El ticker no puede estar vacio y debe tener al menos 3 caracteres. No se realizaron modificaciones')
-                        #else:
-                            #i[1] = nuevo_ticker
-                    #elif opcion_modificar == 3:
-                        #nuevo_valor_ref = float(input("Ingrese el nuevo valor de referencia del activo: "))
-                        #if nuevo_valor_ref <= 0:
-                            #print('Error: El valor de referencia debe ser un número positivo. No se realizaron modificaciones')
-                        #else:
-                            #i[2] = nuevo_valor_ref
-                    #elif opcion_modificar == 4:
-                        #nuevo_vol_act = float(input("Ingrese el nuevo volumen de actividad del activo: "))
-                        #if nuevo_vol_act < 0:
-                            #print('Error: El volumen de actividad no puede ser negativo. No se realizaron modificaciones')
-                        #else:
-                            #i[3] = nuevo_vol_act
-                    #elif opcion_modificar == 5:
-                        #nuevos_metodos_validos = ['Scalping', 'Day Trading', 'Swing Trading', 'HODL'] 
-                        #print('1: Scalping', '2: Day Trading', '3: Swing Trading', '4: HODL')
-                        #nueva_met_op = int(input(f'Ingrese el numero de la nueva metodología de operación asignada: '))
-                        #if nueva_met_op < 1 or nueva_met_op > 4:
-                            #print('Error: La metodología de operación debe ser un número entre 1 y 4. No se realizaron modificaciones')
-                        #else:
-                            #i[4] = nuevos_metodos_validos[nueva_met_op - 1]
-                    #elif opcion_modificar == 6:
-                        #nuevas_unidades = float(input("Ingrese las nuevas unidades en tesorería del activo: "))
-                        #if nuevas_unidades < 0:
-                            #print('Error: Las unidades en tesorería no pueden ser negativas. No se realizaron modificaciones')
-                        #else:
-                            #i[5] = nuevas_unidades
-                    #elif opcion_modificar == 7:
-                        #nuevo_punt_conf = int(input("Ingrese el nuevo puntaje de confianza del activo (1-10): "))
-                        #if nuevo_punt_conf < 1 or nuevo_punt_conf > 10:
-                            #print('Error: El puntaje de confianza debe ser un número entre 1 y 10. No se realizaron modificaciones')
-                        #else:
-                            #i[6] = nuevo_punt_conf
-                    #elif opcion_modificar == 8:
-                        #print("Saliendo del menú de modificación.")
-                    #else:
-                        #print("Opción no válida. Intente nuevamente.")
-                
-                    #if opcion_modificar != 8:
-                       #print("1. Cambiar nombre del activo")
-                       #print("2. Cambiar ticker")
-                       #print("3. Cambiar valor de referencia")
-                       #print("4. Cambiar volumen de actividad")
-                       #print("5. Cambiar metodología de operación")
-                       #print("6. Cambiar unidades en tesorería")
-                       #print("7. Cambiar puntaje de confianza (1-10)")
-                       #print("8. Salir")
-
-                       #opcion_modificar = int(input("Ingrese el número de la opción que desea modificar o 8 para salir: "))
-        
-        #if not activo_encontrado:
-            #print("Activo no encontrado. Intente nuevamente.")
-
-        #activo_a_cambiar = input("Ingrese el nombre del activo que desea modificar o fin para finalizar: ")
+    elif int(opcion) == 4:
+        mostrar_catalogo(catalogo)
     
-    #return lista
+    elif int(opcion) == 5:
+        volumen_superior_al_promedio_catalogo(catalogo)
+
+    elif int(opcion) == 8:
+        print("Saliendo del programa...")
+
+def verificacion_menu_principal(opcion, catalogo, matriz):
+    """Valida la opción del menú principal y deriva al submenú correspondiente.
+    
+    Parámetros:
+        opcion (str): opción ingresada por el usuario.
+        catalogo (list): lista de activos del catálogo.
+        matriz (list): lista de activos en cartera.
+    """
+
+    opciones_validas = ['1', '2', '8']
+
+    while opcion not in opciones_validas:
+        print("\033[91mOpción inválida. Intente nuevamente.\033[0m\n")
+        opcion = menu_principal()
+
+    if int(opcion) == 1:
+        opcion_catalogo = menu_gestion_catalogo()
+        verificacion_menu_catalogo(opcion_catalogo, catalogo, matriz)
+
+    elif int(opcion) == 2:
+        opcion_cartera = menu_gestion_cartera()
+        verificacion_menu_cartera(opcion_cartera, matriz, catalogo)
+
+    elif int(opcion) == 8:
+        print("\033[92mSaliendo del programa...\033[0m")
