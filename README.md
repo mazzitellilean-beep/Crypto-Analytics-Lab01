@@ -25,8 +25,6 @@ Funcionalidades incluidas:
 - Modificación de cualquier campo por nombre del activo.
 - Informe general ordenado por puntaje de confianza.
 
-> Esta versión recibió observaciones de la cátedra que dieron origen a la re-ingeniería de la Fase II. Las observaciones incluyeron: programa sin función `main`, imports dentro de ciclos, módulos de un solo función, falta de robustez ante entradas inválidas, función de búsqueda no separada de la función de eliminación y ausencia de docstrings.
-
 ---
 
 ### Fase II — Versión final
