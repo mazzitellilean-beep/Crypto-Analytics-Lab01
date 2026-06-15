@@ -5,6 +5,12 @@ Proyecto desarrollado como trabajo práctico integrador para la materia de Pensa
 
 ---
 
+## Fase I
+
+Dentro de esta carpeta se encuentra la Fase I del proyecto, donde se encuentra una versión más simple que funciona como un menú interactivo.
+
+---
+
 ## ¿Qué hace este sistema?
 
 Crypto-Analytics Lab es una herramienta de consola que permite gestionar una cartera de activos digitales (criptomonedas, ETFs, acciones tecnológicas, etc.). A través de un menú interactivo, el usuario puede registrar nuevos activos, eliminarlos, modificar sus datos y visualizar un informe ordenado.
