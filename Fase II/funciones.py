@@ -230,7 +230,7 @@ def modificar_activo_catalogo(matriz, nombre, cartera):
 
                     if activo_cartera != False:
                         for i in activo_cartera:
-                            if i[0] == activo_encontrado[0]:
+                            if i[0].lower() == activo_encontrado[0].lower():
                                 i[2] = float(nuevo_valor_ref)
 
                     print("\n\033[92mValor de referencia del activo modificado exitosamente.\033[0m")
