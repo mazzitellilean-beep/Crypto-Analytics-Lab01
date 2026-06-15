@@ -599,7 +599,7 @@ def validar_opcion_repetidos(opcion, activos):
 def validar_opcion_modificar(opcion):
     '''Valida la opción elegida en el menú de modificar activos'''
 
-    if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 8:
+    if opcion == '' or not opcion.isnumeric() or int(opcion) < 1 or int(opcion) > 3 or int(opcion) != 8:
         print("\033[91mOpción inválida. Intente nuevamente.\033[0m")
         return False
     else: 
